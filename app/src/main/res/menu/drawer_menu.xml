@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@id/home"
+        android:title="Home"
+        android:menuCategory="secondary">
+    </item>
+    <item
+        android:id="@id/addTimeEvent"
+        android:title="Add Time Based Event"
+        android:menuCategory="secondary">
+    </item>
+    <item
+        android:id="@id/addLocationEvent"
+        android:title="Add Location Based Event"
+        android:menuCategory="secondary">
+    </item>
+
+
+
+</menu>

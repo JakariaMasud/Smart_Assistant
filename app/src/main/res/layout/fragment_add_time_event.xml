@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".View.AddTimeEventFragment"
+        android:orientation="vertical"
+        >
+        <EditText
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:id="@+id/time_titleEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Event Title"
+            android:inputType="text"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:layout_marginBottom="8dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_below="@+id/time_titleEt"
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:id="@+id/select_timeBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick a Time"
+            android:inputType="text"
+            android:textStyle="bold"
+            android:textColor="#000"/>
+        <TextView
+            android:textStyle="bold"
+            android:focusable="true"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:textColor="#000"
+            android:id="@+id/selected_timeTV"
+            android:padding="15dp"
+            android:text="No time Selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_below="@+id/select_timeBTN"/>
+        <TextView
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:padding="15dp"
+            android:id="@+id/selectTV"
+            android:layout_below="@+id/selected_timeTV"
+            android:textSize="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Type of Action :"/>
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_below="@+id/selectTV"
+            android:id="@+id/action_typeSp"
+            android:padding="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/time_periodTV"
+            android:padding="15dp"
+            android:layout_below="@+id/action_typeSp"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:text="Enter the Event period after the event when you want to restore the normal mode:"/>
+        <EditText
+            android:layout_below="@+id/time_periodTV"
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:id="@+id/time_periodEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="value  in minute"
+            android:inputType="numberDecimal"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/active_timeBTN"
+            android:layout_below="@+id/time_periodEt"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:padding="15dp"
+            android:textSize="15sp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Active Now "/>
+
+    </RelativeLayout>
+</layout>
