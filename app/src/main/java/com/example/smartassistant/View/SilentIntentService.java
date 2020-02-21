@@ -16,13 +16,13 @@ public class SilentIntentService extends JobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
+        AudioManager audiomanage = (AudioManager)this.getSystemService(Context.AUDIO_SERVICE);
+        audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+        Log.e("work","in enque ");
         Log.e("work","successfully silenced done");
 
     }
     static  void enqueuWork(Context context,Intent intent){
-        AudioManager audiomanage = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-        audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-        Log.e("work","in enque ");
         enqueueWork(context,SilentIntentService.class,1234,intent);
     }
 }

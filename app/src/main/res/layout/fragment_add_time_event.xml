@@ -1,102 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".View.AddTimeEventFragment"
-        android:orientation="vertical"
-        >
-        <EditText
-            android:textSize="15sp"
-            android:padding="15dp"
-            android:id="@+id/time_titleEt"
+        android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/time_titleTF"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Event Title"
-            android:inputType="text"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:layout_marginBottom="8dp"/>
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_below="@+id/time_titleEt"
-            android:textSize="15sp"
-            android:padding="15dp"
-            android:id="@+id/select_timeBTN"
+            android:hint="Title"
+            app:boxCornerRadiusTopEnd="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/time_titleET"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_below="@+id/time_titleTF"
+            android:id="@+id/event_periodTF"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Period"
+            app:boxCornerRadiusTopEnd="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/event_periodET"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/select_timBTN"
+            android:layout_margin="10dp"
+            android:layout_below="@id/event_periodTF"
+            android:textColor="@color/textColor"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pick a Time"
-            android:inputType="text"
+            android:text="Select Time"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/SelectedTV"
+            android:text="Selected Time"
             android:textStyle="bold"
-            android:textColor="#000"/>
+            android:layout_below="@id/select_timBTN"
+            android:textColor="@color/colorPrimaryDark"/>
         <TextView
             android:textStyle="bold"
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:textColor="#000"
             android:id="@+id/selected_timeTV"
-            android:padding="15dp"
-            android:text="No time Selected"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:padding="7dp"
+            android:layout_below="@id/SelectedTV"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="No Time Selected"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/notificationTF"
+            android:textColor="#000"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_below="@+id/select_timeBTN"/>
-        <TextView
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:padding="15dp"
-            android:id="@+id/selectTV"
-            android:layout_below="@+id/selected_timeTV"
-            android:textSize="16dp"
+            android:layout_below="@id/selected_timeTV"
+            android:hint="Notification Before The Event in Minute"
+            app:boxCornerRadiusTopEnd="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/notificationET"
+                android:layout_width="match_parent"
+                android:inputType="numberDecimal"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <HorizontalScrollView
+            android:id="@+id/horizontal_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_below="@id/notificationTF"
+            android:layout_margin="10dp">
+            <com.google.android.material.chip.ChipGroup
+
+                android:id="@+id/slection_chip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:chipSpacingHorizontal="32dp">
+
+                <com.google.android.material.chip.Chip
+                    android:padding="10dp"
+                    app:chipCornerRadius="20dp"
+                    android:id="@+id/once_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="once" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/daily_chip"
+
+                    app:chipStrokeColor="@color/colorPrimary"
+                    app:chipCornerRadius="5dp"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="daily" />
+
+                <com.google.android.material.chip.Chip
+                    app:chipCornerRadius="5dp"
+                    android:id="@+id/weekly_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Weekly" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/time_addBTN"
+            android:layout_margin="10dp"
+            android:layout_below="@id/horizontal_container"
+            android:textColor="@color/textColor"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Type of Action :"/>
+            android:text="add"/>
+        />
 
-        <com.jaredrummler.materialspinner.MaterialSpinner
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:layout_below="@+id/selectTV"
-            android:id="@+id/action_typeSp"
-            android:padding="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/time_periodTV"
-            android:padding="15dp"
-            android:layout_below="@+id/action_typeSp"
-            android:layout_width="match_parent"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:layout_height="wrap_content"
-            android:text="Enter the Event period after the event when you want to restore the normal mode:"/>
-        <EditText
-            android:layout_below="@+id/time_periodTV"
-            android:textSize="15sp"
-            android:padding="15dp"
-            android:id="@+id/time_periodEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="value  in minute"
-            android:inputType="numberDecimal"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:layout_marginBottom="8dp"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/active_timeBTN"
-            android:layout_below="@+id/time_periodEt"
-            android:layout_marginBottom="8dp"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:padding="15dp"
-            android:textSize="15sp"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" Active Now "/>
 
     </RelativeLayout>
 </layout>

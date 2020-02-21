@@ -1,34 +1,55 @@
 package com.example.smartassistant.View;
-
-
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.telephony.SmsManager;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.smartassistant.Adapter.LocationBasedAdapter;
+import com.example.smartassistant.Adapter.TimeBasedAdapter;
+import com.example.smartassistant.Model.LocationBasedEvent;
+import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
+import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
+import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
 import com.example.smartassistant.databinding.FragmentHomeBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class HomeFragment extends Fragment {
+import java.util.List;
+
+
+
+public class HomeFragment extends Fragment{
     FragmentHomeBinding homeBinding;
+    LocationBasedAdapter locationBasedAdapter;
+    TimeBasedAdapter timeBasedAdapter;
+    TimeBasedEventViewModel timeBasedEventViewModel;
+    LocationBasedEventViewModel locationBasedEventViewModel;
+    RecyclerView.LayoutManager timeLayoutManager;
+    RecyclerView.LayoutManager locationLayoutManager;
+
+
 
 
     public HomeFragment() {
@@ -40,32 +61,45 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        homeBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_home, container, false);
+        homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         return homeBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        homeBinding.silentBTN.setOnClickListener(new View.OnClickListener() {
+        timeLayoutManager=new LinearLayoutManager(getContext());
+        locationLayoutManager =new LinearLayoutManager(getContext());
+        homeBinding.timeListRV.setLayoutManager(timeLayoutManager);
+        homeBinding.locationListRV.setLayoutManager(locationLayoutManager);
+        timeBasedEventViewModel=new ViewModelProvider(this).get(TimeBasedEventViewModel.class);
+        locationBasedEventViewModel=new ViewModelProvider(this).get(LocationBasedEventViewModel.class);
+        timeBasedEventViewModel.getAllEvents().observe(this, new Observer<List<TimeBasedEvent>>() {
             @Override
-            public void onClick(View v) {
-                int permissionNotifications = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission. ACCESS_NOTIFICATION_POLICY);
-                boolean isGiven=permissionNotifications== PackageManager.PERMISSION_GRANTED;
-                if(!isGiven) {
-                    NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted()) {
-                        Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                        startActivity(intent);
-                    }
-                }
-                else {
-                    AudioManager audiomanage = (AudioManager)getContext().getSystemService(Context.AUDIO_SERVICE);
-                    audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                    Toast.makeText(getContext(), "phone has been silenced", Toast.LENGTH_SHORT).show();
-                }
+            public void onChanged(List<TimeBasedEvent> eventList) {
+                timeBasedAdapter=new TimeBasedAdapter(eventList);
+                homeBinding.timeListRV.setAdapter(timeBasedAdapter);
+                timeBasedAdapter.notifyDataSetChanged();
+
+
+
 
             }
         });
+        locationBasedEventViewModel.getAllEvents().observe(this, new Observer<List<LocationBasedEvent>>() {
+            @Override
+            public void onChanged(List<LocationBasedEvent> locationBasedEvents) {
+                locationBasedAdapter=new LocationBasedAdapter(locationBasedEvents);
+                homeBinding.locationListRV.setAdapter(locationBasedAdapter);
+                locationBasedAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+
+
+
     }
+
+
 }

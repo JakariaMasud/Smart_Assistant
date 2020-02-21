@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardElevation="7dp"
+        app:cardUseCompatPadding="true">
+        <LinearLayout
+            android:padding="15dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/location_titleTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textSize="17sp"/>
+            <TextView
+                android:id="@+id/addressTV"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="address"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textSize="13sp"/>
+            <TextView
+                android:id="@+id/areaTV"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5 meter"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

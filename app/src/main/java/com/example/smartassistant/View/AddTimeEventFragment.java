@@ -36,6 +36,7 @@ public class AddTimeEventFragment extends Fragment  {
     Long selectedTime;
     String eventTitle;
     String eventPeriod;
+    String notificationBefore;
 
 
     public AddTimeEventFragment() {
@@ -54,8 +55,8 @@ public class AddTimeEventFragment extends Fragment  {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        timeEventBinding.actionTypeSp.setItems( "Once","Daily","Weekly");
-        timeEventBinding.selectTimeBTN.setOnClickListener(new View.OnClickListener() {
+        //timeEventBinding.actionTypeSp.setItems( "Once","Daily","Weekly");
+        timeEventBinding.selectTimBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar=Calendar.getInstance();
@@ -69,7 +70,7 @@ public class AddTimeEventFragment extends Fragment  {
 
             }
         });
-        timeEventBinding.actionTypeSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+/*        timeEventBinding.actionTypeSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 switch(position){
@@ -88,16 +89,17 @@ public class AddTimeEventFragment extends Fragment  {
 
                 }
             }
-        });
+        });*/
 
-        timeEventBinding.activeTimeBTN.setOnClickListener(new View.OnClickListener() {
+        timeEventBinding.timeAddBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventTitle=timeEventBinding.timeTitleEt.getText().toString();
-                eventPeriod=timeEventBinding.timePeriodEt.getText().toString();
+                eventTitle=timeEventBinding.timeTitleET.getText().toString();
+                eventPeriod=timeEventBinding.eventPeriodET.getText().toString();
+                notificationBefore=timeEventBinding.notificationET.getText().toString();
 
                 if(TextUtils.isEmpty(eventTitle)){
-                    timeEventBinding.timeTitleEt.setError("Title field can not be empty");
+                    timeEventBinding.timeTitleET.setError("Title field can not be empty");
                 }
                 else {
                     if (selectedTime == null) {
@@ -105,15 +107,20 @@ public class AddTimeEventFragment extends Fragment  {
                     }
                     else{
                         if(selectedType==999){
-                            timeEventBinding.actionTypeSp.setError("please select a action type");
+                            //timeEventBinding.actionTypeSp.setError("please select a action type");
                         }
                         else {
                             if(TextUtils.isEmpty(eventPeriod)){
-                                timeEventBinding.timePeriodEt.setError("period of the event must be given");
+                                timeEventBinding.eventPeriodET.setError("period of the event must be given");
                             }
                             else {
-                                Toast.makeText(getContext(), "successfully added", Toast.LENGTH_SHORT).show();
-                                addToAlarmManager();
+                                if(TextUtils.isEmpty(notificationBefore)){
+                                    timeEventBinding.notificationET.setError("please select notification Before time");
+                                }
+                                else {
+                                    Toast.makeText(getContext(), "successfully added", Toast.LENGTH_SHORT).show();
+                                    addToAlarmManager();
+                                }
                             }
                         }
                     }

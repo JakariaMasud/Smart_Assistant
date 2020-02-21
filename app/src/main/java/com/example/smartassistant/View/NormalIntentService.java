@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
 public class NormalIntentService extends JobIntentService {
+
+
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         AudioManager audiomanage = (AudioManager)this.getSystemService(Context.AUDIO_SERVICE);
