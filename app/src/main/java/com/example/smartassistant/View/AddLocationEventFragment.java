@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.Repository.LocationBasedEventRepository;
+import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
 import com.example.smartassistant.databinding.FragmentAddLocationEventBinding;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -22,6 +25,7 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.schibstedspain.leku.LocationPickerActivity;
 
 import java.util.List;
@@ -45,7 +49,9 @@ public class AddLocationEventFragment extends Fragment  {
     double latitude;
     double longitude;
     String address;
+    String title;
     private PendingIntent geofencePendingIntent;
+    LocationBasedEventViewModel locationBasedEventViewModel;
 
 
     public AddLocationEventFragment() {
@@ -64,6 +70,7 @@ public class AddLocationEventFragment extends Fragment  {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        locationBasedEventViewModel=new ViewModelProvider(this).get(LocationBasedEventViewModel.class);
         geofencingClient = LocationServices.getGeofencingClient(getContext());
         locationEventBinding.locationBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,15 +92,11 @@ public class AddLocationEventFragment extends Fragment  {
         locationEventBinding.addBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String radius=locationEventBinding.areaET.getText().toString();
-                String title=locationEventBinding.titleET.getText().toString();
-
                 checkingUserInput();
-                RADIUS=Float.parseFloat(radius);
-                long req_id=123;
+
                 LocationBasedEvent event=new LocationBasedEvent(title,RADIUS,latitude,longitude,address);
+                long req_id=locationBasedEventViewModel.insert(event);
                 GEOFENCE_REQ_ID=String.valueOf(req_id);
-                
                 Geofence geofence = new Geofence.Builder()
                         .setRequestId(GEOFENCE_REQ_ID) // Geofence ID
                         .setCircularRegion( latitude, longitude, RADIUS) // defining fence region
@@ -112,7 +115,7 @@ public class AddLocationEventFragment extends Fragment  {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Log.e("geofence","successfully added geo fence");
+                            Log.e("geofence","successfully added geofences");
                         }
                         else {
                             Log.e("geofence","failed to add geofences");
@@ -128,6 +131,29 @@ public class AddLocationEventFragment extends Fragment  {
     }
 
     private void checkingUserInput() {
+        String radius=locationEventBinding.areaET.getText().toString();
+        title=locationEventBinding.titleET.getText().toString();
+        ;
+        if(TextUtils.isEmpty(title)){
+            locationEventBinding.titleET.setError("Title Field Can not be empty");
+            return;
+        }
+        else {
+            if(TextUtils.isEmpty(address)){
+                Snackbar.make(locationEventBinding.rootLayoutLocation,"Location Must be Selected",Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            else {
+                if(TextUtils.isEmpty(radius)){
+                    locationEventBinding.areaET.setError("area field cannot be empty");
+                    return;
+                }
+                else {
+                    RADIUS=Float.parseFloat(radius);
+                }
+
+            }
+        }
     }
 
     @Override
@@ -137,7 +163,6 @@ public class AddLocationEventFragment extends Fragment  {
             latitude = data.getDoubleExtra(LATITUDE, 0.0);
             longitude  = data.getDoubleExtra(LONGITUDE, 0.0);
             address = data.getStringExtra(LOCATION_ADDRESS);
-            String postalcode = data.getStringExtra(ZIPCODE);
             locationEventBinding.selectedLocationTV.setText(address);
 
 

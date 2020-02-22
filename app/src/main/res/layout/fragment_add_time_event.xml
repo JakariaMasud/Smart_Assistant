@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".View.AddTimeEventFragment"
@@ -17,6 +18,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:id="@+id/time_titleET"
                 android:layout_height="wrap_content"
@@ -34,6 +36,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:id="@+id/event_periodET"
                 android:layout_height="wrap_content"
@@ -90,45 +93,70 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/select_typeTV"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:padding="7dp"
+            android:layout_below="@id/notificationTF"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Select Type :"/>
+
         <HorizontalScrollView
             android:id="@+id/horizontal_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            android:layout_below="@id/notificationTF"
-            android:layout_margin="10dp">
+            android:layout_below="@id/select_typeTV"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
             <com.google.android.material.chip.ChipGroup
 
-                android:id="@+id/slection_chip"
+                android:id="@+id/slection_chip_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:singleSelection="true"
+                app:singleLine="true"
                 app:chipSpacingHorizontal="32dp">
 
                 <com.google.android.material.chip.Chip
-                    android:padding="10dp"
                     app:chipCornerRadius="20dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:id="@+id/once_chip"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="match_parent"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="80dp"
+                    android:textAlignment="center"
                     android:layout_height="wrap_content"
-                    android:text="once" />
+                    android:text="Once" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/daily_chip"
-
-                    app:chipStrokeColor="@color/colorPrimary"
-                    app:chipCornerRadius="5dp"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
+                    app:chipCornerRadius="20dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="80dp"
+                    android:textAlignment="center"
                     android:layout_height="wrap_content"
-                    android:text="daily" />
+                    android:text="Daily" />
 
                 <com.google.android.material.chip.Chip
-                    app:chipCornerRadius="5dp"
+
+                    app:chipCornerRadius="20dp"
                     android:id="@+id/weekly_chip"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
+                    style="@style/CustomChipChoice"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textAlignment="center"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:text="Weekly" />
             </com.google.android.material.chip.ChipGroup>
@@ -145,8 +173,6 @@
             android:layout_height="wrap_content"
             android:text="add"/>
         />
-
-
 
     </RelativeLayout>
 </layout>

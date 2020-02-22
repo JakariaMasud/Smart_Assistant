@@ -13,44 +13,27 @@ public class TimeBasedEvent {
     private int period;
     private long selectedTime;
     private  int notificationBefore;
-    private String time;
-
+    private String timeAmPm;
     public TimeBasedEvent() {
     }
     @Ignore
-    public TimeBasedEvent(final long id, final String title, final String type, final int period, final long selectedTime, final int notificationBefore, final String time) {
+    public TimeBasedEvent(final long id, final String title, final String type, final int period, final long selectedTime, final int notificationBefore, final String timeAmPm) {
         this.id = id;
         this.title = title;
         this.type = type;
         this.period = period;
         this.selectedTime = selectedTime;
         this.notificationBefore = notificationBefore;
-        this.time = time;
+        this.timeAmPm = timeAmPm;
     }
     @Ignore
-    public TimeBasedEvent(final String title, final String type, final int period, final long selectedTime, final int notificationBefore, final String time) {
+    public TimeBasedEvent(final String title, final String type, final int period, final long selectedTime, final int notificationBefore, final String timeAmPm) {
         this.title = title;
         this.type = type;
         this.period = period;
         this.selectedTime = selectedTime;
         this.notificationBefore = notificationBefore;
-        this.time = time;
-    }
-
-    public String getTime() {
-        return this.time;
-    }
-
-    public void setTime(final String time) {
-        this.time = time;
-    }
-
-    public int getNotificationBefore() {
-        return this.notificationBefore;
-    }
-
-    public void setNotificationBefore(final int notificationBefore) {
-        this.notificationBefore = notificationBefore;
+        this.timeAmPm = timeAmPm;
     }
 
     public long getId() {
@@ -92,6 +75,20 @@ public class TimeBasedEvent {
     public void setSelectedTime(final long selectedTime) {
         this.selectedTime = selectedTime;
     }
+
+    public int getNotificationBefore() {
+        return this.notificationBefore;
+    }
+
+    public void setNotificationBefore(final int notificationBefore) {
+        this.notificationBefore = notificationBefore;
+    }
+
+    public String getTimeAmPm() {
+        return this.timeAmPm;
+    }
+
+    public void setTimeAmPm(final String timeAmPm) {
+        this.timeAmPm = timeAmPm;
+    }
 }
-
-

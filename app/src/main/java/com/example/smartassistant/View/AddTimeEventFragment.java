@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -20,11 +21,13 @@ import android.view.ViewGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
+import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
 import com.example.smartassistant.databinding.FragmentAddTimeEventBinding;
 import com.google.android.material.snackbar.Snackbar;
-import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -32,11 +35,16 @@ import java.util.Calendar;
  */
 public class AddTimeEventFragment extends Fragment  {
     FragmentAddTimeEventBinding timeEventBinding;
-    int selectedType;
+    int selectedType=999;
     Long selectedTime;
     String eventTitle;
     String eventPeriod;
     String notificationBefore;
+    String selectedAmPm;
+    String type;
+    TimeBasedEventViewModel timeBasedEventViewModel;
+    int notificationInt;
+    int periodInt;
 
 
     public AddTimeEventFragment() {
@@ -55,7 +63,7 @@ public class AddTimeEventFragment extends Fragment  {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //timeEventBinding.actionTypeSp.setItems( "Once","Daily","Weekly");
+        timeBasedEventViewModel=new ViewModelProvider(this).get(TimeBasedEventViewModel.class);
         timeEventBinding.selectTimBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,26 +78,20 @@ public class AddTimeEventFragment extends Fragment  {
 
             }
         });
-/*        timeEventBinding.actionTypeSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                switch(position){
-                    case 0:
-                        selectedType=0;
-                        break;
-                    case 1:
-                        selectedType=1;
-                        break;
-                    case 2:
-                        selectedType=2;
-                        break;
-                        default:
-                            selectedType=0;
-                            break;
-
-                }
-            }
-        });*/
+       int selection= timeEventBinding.slectionChipGroup.getCheckedChipId();
+       switch (selection){
+           case R.id.once_chip:
+               selectedType=0;
+               break;
+           case R.id.daily_chip:
+               selectedType=1;
+               break;
+           case R.id.weekly_chip:
+               selectedType=2;
+               break;
+               default:
+                   break;
+       }
 
         timeEventBinding.timeAddBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,24 +100,29 @@ public class AddTimeEventFragment extends Fragment  {
                 eventPeriod=timeEventBinding.eventPeriodET.getText().toString();
                 notificationBefore=timeEventBinding.notificationET.getText().toString();
 
+
                 if(TextUtils.isEmpty(eventTitle)){
                     timeEventBinding.timeTitleET.setError("Title field can not be empty");
                 }
                 else {
                     if (selectedTime == null) {
-                        //snakbar
+                        Snackbar.make(timeEventBinding.rootLayout,"Time must be selected",Snackbar.LENGTH_LONG).show();
+                        return;
                     }
                     else{
                         if(selectedType==999){
-                            //timeEventBinding.actionTypeSp.setError("please select a action type");
+                            Snackbar.make(timeEventBinding.rootLayout,"please select the type of action",Snackbar.LENGTH_LONG).show();
+                            return;
                         }
                         else {
                             if(TextUtils.isEmpty(eventPeriod)){
                                 timeEventBinding.eventPeriodET.setError("period of the event must be given");
+                                return;
                             }
                             else {
                                 if(TextUtils.isEmpty(notificationBefore)){
                                     timeEventBinding.notificationET.setError("please select notification Before time");
+                                    return;
                                 }
                                 else {
                                     Toast.makeText(getContext(), "successfully added", Toast.LENGTH_SHORT).show();
@@ -135,22 +142,44 @@ public class AddTimeEventFragment extends Fragment  {
         AlarmManager alarmManager=(AlarmManager)getActivity().getSystemService(getContext().ALARM_SERVICE);
         Intent eventIntent=new Intent(getContext(),TimeEventReciever.class);
         PendingIntent eventPendingIntent=PendingIntent.getBroadcast(getContext(),1,eventIntent,0);
+        Intent alertIntent= new Intent(getContext(),AlertReciever.class);
+        PendingIntent alertPendingIntent=PendingIntent.getBroadcast(getContext(),2,alertIntent,0);
+        Intent timeOverIntent=new Intent(getContext(),TimeOverReciever.class);
+        PendingIntent timeOverPendingIntent=PendingIntent.getBroadcast(getContext(),3,timeOverIntent,0);
+        notificationInt=Integer.parseInt(notificationBefore.trim());
+        periodInt=Integer.parseInt(eventPeriod.trim());
         if(selectedType==0){
+            type="Once";
             alarmManager.setExact(AlarmManager.RTC_WAKEUP,selectedTime.longValue(),eventPendingIntent);
-            Intent alertIntent= new Intent(getContext(),AlertReciever.class);
-            PendingIntent alertPendingIntent=PendingIntent.getBroadcast(getContext(),2,alertIntent,0);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,selectedTime.longValue()-1*60*1000,alertPendingIntent);
-            Intent timeOverIntent=new Intent(getContext(),TimeOverReciever.class);
-            PendingIntent timeOverPendingIntent=PendingIntent.getBroadcast(getContext(),3,timeOverIntent,0);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,selectedTime.longValue()+Integer.parseInt(eventPeriod.trim())*60*1000,timeOverPendingIntent);
-            Toast.makeText(getContext(), "alamrm added", Toast.LENGTH_SHORT).show();
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,selectedTime.longValue()-notificationInt*60*1000,alertPendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,selectedTime.longValue()+periodInt*60*1000,timeOverPendingIntent);
+            addToTheDatabase();
         }
         else if(selectedType==1){
+            type="Daily";
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,selectedTime.longValue(),AlarmManager.INTERVAL_DAY,eventPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,selectedTime.longValue()-notificationInt*60*1000,AlarmManager.INTERVAL_DAY,alertPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,selectedTime.longValue()+periodInt*60*1000,AlarmManager.INTERVAL_DAY,timeOverPendingIntent);
+            addToTheDatabase();
 
         }
         else if(selectedType==2){
-
+            type="Weekly";
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,selectedTime.longValue(),AlarmManager.INTERVAL_DAY*7,eventPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,selectedTime.longValue()-notificationInt*60*1000,AlarmManager.INTERVAL_DAY*7,alertPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,selectedTime.longValue()+periodInt*60*1000,AlarmManager.INTERVAL_DAY*7,timeOverPendingIntent);
+            addToTheDatabase();
         }
+
+
+    }
+
+    private void addToTheDatabase() {
+
+        TimeBasedEvent event=new TimeBasedEvent(eventTitle,type,periodInt,selectedTime,notificationInt,selectedAmPm);
+        timeBasedEventViewModel.insert(event);
+
+
 
     }
 
@@ -162,6 +191,9 @@ public class AddTimeEventFragment extends Fragment  {
          selectedCal.set(Calendar.HOUR_OF_DAY,hourOfDay);
          selectedCal.set(Calendar.MINUTE,minute);
          selectedTime=selectedCal.getTimeInMillis();
+         selectedAmPm= (String) DateFormat.format("hh:mm a",selectedCal);
+         timeEventBinding.selectedTimeTV.setText(selectedAmPm);
+
      }
  };
 }

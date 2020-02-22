@@ -11,7 +11,7 @@ import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.Model.TimeBasedEvent;
 
-@Database(version = 1,entities={LocationBasedEvent.class, TimeBasedEvent.class},exportSchema = false)
+@Database(version = 2,entities={LocationBasedEvent.class, TimeBasedEvent.class},exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
     private static AppDataBase instance;
     public abstract LocationBasedEventDao locationBasedEventDao();
