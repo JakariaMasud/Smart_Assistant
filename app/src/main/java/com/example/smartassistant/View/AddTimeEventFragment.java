@@ -25,7 +25,9 @@ import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
 import com.example.smartassistant.databinding.FragmentAddTimeEventBinding;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
+import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +47,7 @@ public class AddTimeEventFragment extends Fragment  {
     TimeBasedEventViewModel timeBasedEventViewModel;
     int notificationInt;
     int periodInt;
+
 
 
     public AddTimeEventFragment() {
@@ -78,20 +81,26 @@ public class AddTimeEventFragment extends Fragment  {
 
             }
         });
-       int selection= timeEventBinding.slectionChipGroup.getCheckedChipId();
-       switch (selection){
-           case R.id.once_chip:
-               selectedType=0;
-               break;
-           case R.id.daily_chip:
-               selectedType=1;
-               break;
-           case R.id.weekly_chip:
-               selectedType=2;
-               break;
-               default:
-                   break;
-       }
+        timeEventBinding.slectionChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(ChipGroup group, int checkedId) {
+               switch (checkedId){
+                   case R.id.once_chip:
+                       selectedType=0;
+                       break;
+                   case R.id.daily_chip:
+                       selectedType=1;
+                       break;
+                   case R.id.weekly_chip:
+                       selectedType=2;
+                       break;
+                   default:
+                       break;
+               }
+
+           }
+       });
+
 
         timeEventBinding.timeAddBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +134,7 @@ public class AddTimeEventFragment extends Fragment  {
                                     return;
                                 }
                                 else {
-                                    Toast.makeText(getContext(), "successfully added", Toast.LENGTH_SHORT).show();
+                                    timeEventBinding.progressCircularBar.show();
                                     addToAlarmManager();
                                 }
                             }
@@ -177,7 +186,14 @@ public class AddTimeEventFragment extends Fragment  {
     private void addToTheDatabase() {
 
         TimeBasedEvent event=new TimeBasedEvent(eventTitle,type,periodInt,selectedTime,notificationInt,selectedAmPm);
-        timeBasedEventViewModel.insert(event);
+       long rowId= timeBasedEventViewModel.insert(event);
+       String id=String.valueOf(rowId);
+       if(TextUtils.isEmpty(id)){
+           timeEventBinding.progressCircularBar.hide();
+           Snackbar.make(timeEventBinding.rootLayout,"Something Went Wrong",Snackbar.LENGTH_LONG).show();
+
+       }
+
 
 
 

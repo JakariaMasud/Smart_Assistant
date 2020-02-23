@@ -89,6 +89,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="add"/>
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progress_circular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 </layout>

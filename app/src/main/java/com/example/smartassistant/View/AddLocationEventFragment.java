@@ -93,6 +93,7 @@ public class AddLocationEventFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 checkingUserInput();
+                locationEventBinding.progressCircular.show();
 
                 LocationBasedEvent event=new LocationBasedEvent(title,RADIUS,latitude,longitude,address);
                 long req_id=locationBasedEventViewModel.insert(event);
@@ -115,10 +116,12 @@ public class AddLocationEventFragment extends Fragment  {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+                            locationEventBinding.progressCircular.hide();
                             Log.e("geofence","successfully added geofences");
                         }
                         else {
                             Log.e("geofence","failed to add geofences");
+                            Snackbar.make(locationEventBinding.rootLayoutLocation,"something went wrong",Snackbar.LENGTH_LONG).show();
                         }
                     }
                 });
