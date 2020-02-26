@@ -1,4 +1,4 @@
-package com.example.smartassistant.View;
+package com.example.smartassistant.Service;
 
 import android.content.Context;
 import android.content.Intent;

@@ -14,9 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.smartassistant.BroadCastReciver.LocationBasedEventReciever;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.R;
-import com.example.smartassistant.Repository.LocationBasedEventRepository;
 import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
 import com.example.smartassistant.databinding.FragmentAddLocationEventBinding;
 import com.google.android.gms.location.Geofence;
@@ -28,13 +28,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.schibstedspain.leku.LocationPickerActivity;
 
-import java.util.List;
-
 import static android.app.Activity.RESULT_OK;
 import static com.schibstedspain.leku.LocationPickerActivityKt.LATITUDE;
 import static com.schibstedspain.leku.LocationPickerActivityKt.LOCATION_ADDRESS;
 import static com.schibstedspain.leku.LocationPickerActivityKt.LONGITUDE;
-import static com.schibstedspain.leku.LocationPickerActivityKt.ZIPCODE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,7 +90,7 @@ public class AddLocationEventFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 checkingUserInput();
-                locationEventBinding.progressCircular.show();
+
 
                 LocationBasedEvent event=new LocationBasedEvent(title,RADIUS,latitude,longitude,address);
                 long req_id=locationBasedEventViewModel.insert(event);
@@ -116,7 +113,7 @@ public class AddLocationEventFragment extends Fragment  {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            locationEventBinding.progressCircular.hide();
+
                             Log.e("geofence","successfully added geofences");
                         }
                         else {

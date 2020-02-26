@@ -1,4 +1,4 @@
-package com.example.smartassistant.View;
+package com.example.smartassistant.BroadCastReciver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,11 +11,17 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.smartassistant.Service.SilentIntentService;
+
+import static com.example.smartassistant.View.AddTimeEventFragment.EVENT;
+
 public class TimeEventReciever extends BroadcastReceiver {
-    private static final String TAG = "Reciever";
     @Override
     public void onReceive(Context context, Intent intent) {
-        SilentIntentService.enqueuWork(context,new Intent(context,SilentIntentService.class));
+        long eventId=intent.getLongExtra(EVENT,0);
+       Intent silentIntent=new Intent(context,SilentIntentService.class);
+       SilentIntentService.enqueueWork(context,silentIntent,eventId);
+
 
 
 }

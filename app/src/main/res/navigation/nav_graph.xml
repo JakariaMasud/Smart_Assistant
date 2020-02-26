@@ -14,7 +14,11 @@
         android:id="@+id/addTimeEvent"
         android:name="com.example.smartassistant.View.AddTimeEventFragment"
         android:label="Add Time Event"
-        tools:layout="@layout/fragment_add_time_event" />
+        tools:layout="@layout/fragment_add_time_event" >
+        <action
+            android:id="@+id/action_addTimeEvent_to_home"
+            app:destination="@id/home" />
+    </fragment>
     <fragment
         android:id="@+id/addLocationEvent"
         android:name="com.example.smartassistant.View.AddLocationEventFragment"

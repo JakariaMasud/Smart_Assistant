@@ -3,6 +3,7 @@ package com.example.smartassistant.Repository;
 import android.app.Application;
 import androidx.lifecycle.LiveData;
 import com.example.smartassistant.AppDataBase;
+import com.example.smartassistant.AsyncTask.DeleteAllTimeEventTask;
 import com.example.smartassistant.AsyncTask.GetTimeEventByIdTask;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
@@ -82,5 +83,9 @@ public class TimeBasedEventRepository {
         }
 
         return event ;
+    }
+    public void deleteAllEvent(){
+        DeleteAllTimeEventTask deleteAllTimeEventTask=new DeleteAllTimeEventTask(timeBasedEventDao);
+        deleteAllTimeEventTask.execute();
     }
 }

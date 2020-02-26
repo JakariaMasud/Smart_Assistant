@@ -1,10 +1,12 @@
-package com.example.smartassistant.View;
+package com.example.smartassistant.BroadCastReciver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+
+import com.example.smartassistant.Service.MessageSendingService;
 
 public class PhoneStateReciever extends BroadcastReceiver {
     @Override
@@ -30,7 +32,7 @@ public class PhoneStateReciever extends BroadcastReceiver {
         public void onCallStateChanged(final int state, final String phoneNumber) {
             super.onCallStateChanged(state, phoneNumber);
             if(state==TelephonyManager.CALL_STATE_OFFHOOK){
-                Intent intent=new Intent(context,MessageSendingService.class);
+                Intent intent=new Intent(context, MessageSendingService.class);
                 MessageSendingService.enqueueMessage(context,intent,phoneNumber);
 
 

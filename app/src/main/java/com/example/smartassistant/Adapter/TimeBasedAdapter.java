@@ -34,7 +34,7 @@ public class TimeBasedAdapter extends RecyclerView.Adapter<TimeBasedAdapter.Time
         holder.singleTimeEventBinding.timeTV.setText("selected time :"+event.getTimeAmPm());
         holder.singleTimeEventBinding.periodTV.setText("event period :"+event.getPeriod()+"minutes");
         holder.singleTimeEventBinding.typeTV.setText("event type : "+event.getType());
-        holder.singleTimeEventBinding.notificationTV.setText("notification before :"+String.valueOf(event.getPeriod()+" minutes"));
+        holder.singleTimeEventBinding.notificationTV.setText("notification before :"+String.valueOf(event.getNotificationBefore())+" minutes");
 
     }
 

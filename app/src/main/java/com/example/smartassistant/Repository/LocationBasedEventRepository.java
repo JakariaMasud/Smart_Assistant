@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import com.example.smartassistant.AppDataBase;
+import com.example.smartassistant.AsyncTask.DeleteAllLocationEventTask;
 import com.example.smartassistant.AsyncTask.GetAllLocationEventTask;
 import com.example.smartassistant.AsyncTask.GetLocationEventByIdTask;
 import com.example.smartassistant.AsyncTask.LocationEventDeleteTask;
@@ -80,5 +81,9 @@ public class LocationBasedEventRepository {
             e.printStackTrace();
         }
         return event ;
+    }
+    public void deleteAllEvent(){
+        DeleteAllLocationEventTask deleteAllLocationEventTask=new DeleteAllLocationEventTask(locationBasedEventDao);
+        deleteAllLocationEventTask.execute();
     }
 }

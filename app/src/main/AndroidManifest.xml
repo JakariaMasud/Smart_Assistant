@@ -21,6 +21,7 @@
     <uses-feature android:name="android.hardware.location.gps" android:required="false"  />
 
     <application
+        android:name=".View.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,11 +29,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".View.SilentIntentService"
+            android:name=".Service.SilentIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE"></service>
-        <service android:name=".View.NormalIntentService"
+        <service android:name=".Service.NormalIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <service android:name=".View.AlertIntentService"
+        <service android:name=".Service.AlertIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE"></service>
 
         <activity android:name=".View.MainActivity">
@@ -61,15 +62,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />
 
-        <receiver android:name=".View.AlertReciever" />
-        <receiver android:name=".View.TimeEventReciever" />
-        <receiver android:name=".View.TimeOverReciever"/>
-        <receiver android:name=".View.PhoneStateReciever">
+        <receiver android:name=".BroadCastReciver.AlertReciever" />
+        <receiver android:name=".BroadCastReciver.TimeEventReciever" />
+        <receiver android:name=".BroadCastReciver.TimeOverReciever"/>
+        <receiver android:name=".BroadCastReciver.PhoneStateReciever">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".View.LocationBasedEventReciever"/>
+        <receiver android:name=".BroadCastReciver.LocationBasedEventReciever"/>
     </application>
 
 </manifest>
