@@ -11,7 +11,7 @@ import androidx.core.app.JobIntentService;
 
 
 public class SilentIntentService extends JobIntentService {
-    private static long eventId;
+    private static String eventId;
     SharedPreferences preferences;
     SharedPreferences.Editor sfEditor;
 
@@ -22,7 +22,7 @@ public class SilentIntentService extends JobIntentService {
         preferences=getSharedPreferences("MyPref",MODE_PRIVATE);
         sfEditor=preferences.edit();
         sfEditor.putBoolean("isTimeEventActive",true);
-        sfEditor.putLong("activatedTimeEvent",eventId);
+        sfEditor.putString("activatedTimeEvent",eventId);
         sfEditor.commit();
         AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         int mode=audioManager.getRingerMode();
@@ -34,7 +34,7 @@ public class SilentIntentService extends JobIntentService {
 
 
     }
-    public static  void enqueueWork(Context context,Intent intent,long id){
+    public static  void enqueueWork(Context context, Intent intent, String id){
         eventId=id;
         enqueueWork(context,SilentIntentService.class,1234,intent);
     }

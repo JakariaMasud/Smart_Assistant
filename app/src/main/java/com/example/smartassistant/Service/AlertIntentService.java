@@ -11,9 +11,11 @@ import androidx.core.app.JobIntentService;
 import static com.example.smartassistant.View.AddTimeEventFragment.EVENT;
 
 public class AlertIntentService extends JobIntentService {
-    private static long eventId;
+    private static final String TAG = "AlertIntentService";
+    private static String eventId;
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
+        Log.e(TAG,"TRIGGERD");
 
         AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
         int mode=audioManager.getRingerMode();
@@ -21,7 +23,7 @@ public class AlertIntentService extends JobIntentService {
             NotificationHelper.displayNotification(this,"Event Alert","your phone will be silence mode in a few moment");
         }
     }
-    public static void enqueueAlert(Context context, Intent intent,long id){
+    public static void enqueueAlert(Context context, Intent intent, String id){
         eventId=id;
         enqueueWork(context,AlertIntentService.class,567,intent);
     }

@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.smartassistant"
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -40,14 +40,16 @@ dependencies {
     implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
     annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0"
-    implementation 'com.roger.catloadinglibrary:catloadinglibrary:1.0.4'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.material:material:1.2.0-alpha04'
     implementation 'com.schibstedspain.android:leku:6.4.0'
+
     def room_version = "2.2.3"
 
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }
 apply plugin: "androidx.navigation.safeargs"

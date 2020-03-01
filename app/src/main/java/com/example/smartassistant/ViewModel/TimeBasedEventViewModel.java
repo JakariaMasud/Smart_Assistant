@@ -5,11 +5,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
-
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.Repository.TimeBasedEventRepository;
-
 import java.util.List;
 
 public class TimeBasedEventViewModel extends AndroidViewModel{
@@ -22,14 +19,13 @@ public class TimeBasedEventViewModel extends AndroidViewModel{
         allEvents=timeBasedEventRepository.getAllEvents();
     }
 
-
    public LiveData<List<TimeBasedEvent>> getAllEvents(){
         return allEvents;
     }
 
-   public long insert(TimeBasedEvent event){
-        long row_id=timeBasedEventRepository.insert(event);
-        return row_id;
+   public void insert(TimeBasedEvent event){
+        timeBasedEventRepository.insert(event);
+
     }
 
     public void update(TimeBasedEvent event){
@@ -41,10 +37,10 @@ public class TimeBasedEventViewModel extends AndroidViewModel{
     public void deleteAllEvents(){
         timeBasedEventRepository.deleteAllEvents();
     }
-    public void deleteById(long id){
+    public void deleteById(String id){
         timeBasedEventRepository.deleteById(id);
     }
-    public TimeBasedEvent getById(long id){
+    public TimeBasedEvent getById(String id){
        return timeBasedEventRepository.getEventById(id);
     }
 

@@ -17,7 +17,7 @@ public interface TimeBasedEventDao {
     public LiveData<List<TimeBasedEvent>> getAllEvents();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public long addEvent(TimeBasedEvent event);
+    public void addEvent(TimeBasedEvent event);
 
     @Delete
     public void deleteEvent(TimeBasedEvent event);
@@ -26,10 +26,10 @@ public interface TimeBasedEventDao {
     public void updateEvent(TimeBasedEvent event);
 
     @Query("SELECT * FROM time_based_table WHERE id =:id")
-    public TimeBasedEvent getEventById(long id);
+    public TimeBasedEvent getEventById(String id);
 
     @Query("DELETE  FROM time_based_table WHERE id=:id")
-    public void deleteById(long id);
+    public void deleteById(String id);
 
     @Query("DELETE  FROM time_based_table")
     public void deleteAllEvents();

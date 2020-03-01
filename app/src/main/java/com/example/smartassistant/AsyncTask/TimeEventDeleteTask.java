@@ -6,7 +6,7 @@ import com.example.smartassistant.Dao.LocationBasedEventDao;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
 
-public class TimeEventDeleteTask extends AsyncTask<Long,Void,Void> {
+public class TimeEventDeleteTask extends AsyncTask<String,Void,Void> {
     TimeBasedEventDao timeBasedEventDao;
 
     public TimeEventDeleteTask(final TimeBasedEventDao timeBasedEventDao) {
@@ -14,8 +14,8 @@ public class TimeEventDeleteTask extends AsyncTask<Long,Void,Void> {
     }
 
     @Override
-    protected Void doInBackground(Long... longs) {
-        timeBasedEventDao.deleteById(longs[0]);
+    protected Void doInBackground(String... strings) {
+        timeBasedEventDao.deleteById(strings[0]);
         return null;
     }
 

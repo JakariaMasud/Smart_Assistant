@@ -19,7 +19,7 @@ public interface LocationBasedEventDao {
     public LiveData<List<LocationBasedEvent>>getAllEvents();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public long addEvent(LocationBasedEvent event);
+    public void addEvent(LocationBasedEvent event);
 
     @Delete
     public void deleteEvent(LocationBasedEvent event);
@@ -28,10 +28,10 @@ public interface LocationBasedEventDao {
     public void updateEvent(LocationBasedEvent event);
 
     @Query("SELECT * FROM LOCATION_BASED_TABLE WHERE id =:id")
-    public LocationBasedEvent getEventById(long id);
+    public LocationBasedEvent getEventById(String id);
 
     @Query("DELETE  FROM LOCATION_BASED_TABLE WHERE id=:id")
-    public void deleteById(long id);
+    public void deleteById(String id);
 
     @Query("DELETE  FROM LOCATION_BASED_TABLE")
     public void deleteAllEvents();

@@ -15,6 +15,22 @@
         android:title="Add Location Based Event"
         android:menuCategory="secondary">
     </item>
+    <item
+        android:id="@id/configuration"
+        android:title="Configure App"
+        android:menuCategory="secondary">
+    </item>
+    <item
+        android:id="@id/emargencyHelpLine"
+        android:title="Helpline"
+        android:menuCategory="secondary">
+    </item>
+    <item
+        android:id="@id/aboutUs"
+        android:title="About us"
+        android:menuCategory="secondary">
+    </item>
+
 
 
 

@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 
 import com.example.smartassistant.Dao.LocationBasedEventDao;
 
-public class LocationEventDeleteTask extends AsyncTask<Long,Void,Void> {
+public class LocationEventDeleteTask extends AsyncTask<String,Void,Void> {
     LocationBasedEventDao locationBasedEventDao;
 
     public LocationEventDeleteTask(final LocationBasedEventDao locationBasedEventDao) {
@@ -12,8 +12,8 @@ public class LocationEventDeleteTask extends AsyncTask<Long,Void,Void> {
     }
 
     @Override
-    protected Void doInBackground(Long... Longs) {
-        locationBasedEventDao.deleteById(Longs[0]);
+    protected Void doInBackground(String... strings) {
+        locationBasedEventDao.deleteById(strings[0]);
         return null;
     }
 

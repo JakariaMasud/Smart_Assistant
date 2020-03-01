@@ -19,7 +19,7 @@ public class NormalIntentService extends JobIntentService {
     SharedPreferences.Editor sfEditor;
     TimeBasedEventDao timeBasedEventDao;
     AppDataBase dataBase;
-    public static long timeEventId;
+    public static String timeEventId;
     TimeBasedEvent event;
 
 
@@ -29,12 +29,11 @@ public class NormalIntentService extends JobIntentService {
         Log.e("app","In normal service");
         preferences=getSharedPreferences("MyPref",MODE_PRIVATE);
         sfEditor=preferences.edit();
-        dataBase=AppDataBase.getInstance(getApplication());
+        dataBase=AppDataBase.getInstance(getApplicationContext());
         timeBasedEventDao=dataBase.timeBasedEventDao();
         sfEditor.putBoolean("isTimeEventActive",false);
-        sfEditor.putLong("activatedTimeEvent",-1);
+        sfEditor.putString("activatedTimeEvent",null);
         event=timeBasedEventDao.getEventById(timeEventId);
-        Log.e("object","event : "+event.toString());
         if(event.getType().equals("Once")){
             timeBasedEventDao.deleteById(event.getId());
         }
@@ -46,7 +45,7 @@ public class NormalIntentService extends JobIntentService {
 
     }
 
-    public static void enqueueJob(Context context,Intent job,long eventId){
+    public static void enqueueJob(Context context, Intent job, String eventId){
         timeEventId=eventId;
         enqueueWork(context,NormalIntentService.class,789,job);
     }

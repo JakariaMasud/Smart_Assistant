@@ -1,13 +1,15 @@
 package com.example.smartassistant.Model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "location_based_table")
 public class LocationBasedEvent {
-    @PrimaryKey(autoGenerate = true)
-    long id;
+    @NonNull
+    @PrimaryKey
+    String id;
     String title;
     float radiusInMeter;
     double latitude;
@@ -17,7 +19,7 @@ public class LocationBasedEvent {
     public LocationBasedEvent() {
     }
     @Ignore
-    public LocationBasedEvent(final long id, final String title, final float radiusInMeter, final double latitude, final double longitude, final String address) {
+    public LocationBasedEvent(final String id, final String title, final float radiusInMeter, final double latitude, final double longitude, final String address) {
         this.id = id;
         this.title = title;
         this.radiusInMeter = radiusInMeter;
@@ -25,20 +27,12 @@ public class LocationBasedEvent {
         this.longitude = longitude;
         this.address = address;
     }
-    @Ignore
-    public LocationBasedEvent(final String title, final float radiusInMeter, final double latitude, final double longitude, final String address) {
-        this.title = title;
-        this.radiusInMeter = radiusInMeter;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.address = address;
-    }
 
-    public long getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(final long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 

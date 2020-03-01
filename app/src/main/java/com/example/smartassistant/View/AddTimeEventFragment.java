@@ -40,6 +40,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
+import java.util.UUID;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -85,7 +87,7 @@ public class AddTimeEventFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         timeBasedEventViewModel = new ViewModelProvider(this).get(TimeBasedEventViewModel.class);
-        AddTimeEventFragmentPermissionsDispatcher.settingUpListenerWithPermissionCheck(AddTimeEventFragment.this);
+        AddTimeEventFragmentPermissionsDispatcher.settingUpListenerWithPermissionCheck(this);
 
 
     }
@@ -215,8 +217,7 @@ public class AddTimeEventFragment extends Fragment {
     }
 
 
-    public void addToAlarmManager(long id) {
-        Log.e("alarm manager id: ",String.valueOf(id));
+    public void addToAlarmManager(String id) {
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
         Intent eventIntent = new Intent(getContext(), TimeEventReciever.class);
         eventIntent.putExtra(EVENT,id);
@@ -251,7 +252,6 @@ public class AddTimeEventFragment extends Fragment {
 
         }
 
-
     }
 
     private void addToTheDatabase() {
@@ -270,16 +270,11 @@ public class AddTimeEventFragment extends Fragment {
         }
         notificationInt = Integer.parseInt(notificationBefore.trim());
         periodInt = Integer.parseInt(eventPeriod.trim());
-        TimeBasedEvent event = new TimeBasedEvent(eventTitle, type, periodInt, selectedTime, notificationInt, selectedAmPm);
-        long rowId = timeBasedEventViewModel.insert(event);
-        String id = String.valueOf(rowId);
-        if (TextUtils.isEmpty(id)) {
-            timeEventBinding.timeProgress.setVisibility(ProgressBar.GONE);
-            Snackbar.make(timeEventBinding.rootLayout, "Something Went Wrong", Snackbar.LENGTH_LONG).show();
-        }
-        else {
-            addToAlarmManager(rowId);
-        }
+        String id= UUID.randomUUID().toString();
+        TimeBasedEvent event = new TimeBasedEvent(id,eventTitle, type, periodInt, selectedTime, notificationInt, selectedAmPm);
+        timeBasedEventViewModel.insert(event);
+            addToAlarmManager(id);
+
 
 
     }
@@ -322,7 +317,7 @@ public class AddTimeEventFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        AddTimeEventFragmentPermissionsDispatcher.onRequestPermissionsResult(AddTimeEventFragment.this,requestCode,grantResults);
+        AddTimeEventFragmentPermissionsDispatcher.onRequestPermissionsResult(this,requestCode,grantResults);
     }
 }
 

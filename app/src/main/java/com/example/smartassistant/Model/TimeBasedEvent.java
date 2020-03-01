@@ -1,13 +1,15 @@
 package com.example.smartassistant.Model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "time_based_table")
 public class TimeBasedEvent {
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+    @NonNull
+    @PrimaryKey
+    private String id;
     private String title;
     private String type;
     private int period;
@@ -17,7 +19,7 @@ public class TimeBasedEvent {
     public TimeBasedEvent() {
     }
     @Ignore
-    public TimeBasedEvent(final long id, final String title, final String type, final int period, final long selectedTime, final int notificationBefore, final String timeAmPm) {
+    public TimeBasedEvent(final String id, final String title, final String type, final int period, final long selectedTime, final int notificationBefore, final String timeAmPm) {
         this.id = id;
         this.title = title;
         this.type = type;
@@ -26,21 +28,12 @@ public class TimeBasedEvent {
         this.notificationBefore = notificationBefore;
         this.timeAmPm = timeAmPm;
     }
-    @Ignore
-    public TimeBasedEvent(final String title, final String type, final int period, final long selectedTime, final int notificationBefore, final String timeAmPm) {
-        this.title = title;
-        this.type = type;
-        this.period = period;
-        this.selectedTime = selectedTime;
-        this.notificationBefore = notificationBefore;
-        this.timeAmPm = timeAmPm;
-    }
 
-    public long getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(final long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 

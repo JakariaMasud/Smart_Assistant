@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Build;
@@ -15,6 +16,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +43,7 @@ import java.util.List;
 
 
 
+
 public class HomeFragment extends Fragment{
     FragmentHomeBinding homeBinding;
     LocationBasedAdapter locationBasedAdapter;
@@ -48,6 +52,9 @@ public class HomeFragment extends Fragment{
     LocationBasedEventViewModel locationBasedEventViewModel;
     RecyclerView.LayoutManager timeLayoutManager;
     RecyclerView.LayoutManager locationLayoutManager;
+    private static final String TAG = "HomeFragment";
+    SharedPreferences preferences;
+    NavController navController;
 
 
 
@@ -68,6 +75,13 @@ public class HomeFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController= Navigation.findNavController(view);
+        preferences=getActivity().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+        boolean hasData =preferences.contains("isConfigured");
+        if(!hasData){
+            navController.navigate(R.id.action_home_to_configurationFragment);
+
+        }
         timeLayoutManager=new LinearLayoutManager(getContext());
         locationLayoutManager =new LinearLayoutManager(getContext());
         homeBinding.timeListRV.setLayoutManager(timeLayoutManager);
@@ -77,6 +91,7 @@ public class HomeFragment extends Fragment{
         timeBasedEventViewModel.getAllEvents().observe(this, new Observer<List<TimeBasedEvent>>() {
             @Override
             public void onChanged(List<TimeBasedEvent> eventList) {
+                Log.e(TAG, eventList.toString());
                 timeBasedAdapter=new TimeBasedAdapter(eventList);
                 homeBinding.timeListRV.setAdapter(timeBasedAdapter);
                 timeBasedAdapter.notifyDataSetChanged();
@@ -89,6 +104,7 @@ public class HomeFragment extends Fragment{
         locationBasedEventViewModel.getAllEvents().observe(this, new Observer<List<LocationBasedEvent>>() {
             @Override
             public void onChanged(List<LocationBasedEvent> locationBasedEvents) {
+                Log.e(TAG, locationBasedEvents.toString());
                 locationBasedAdapter=new LocationBasedAdapter(locationBasedEvents);
                 homeBinding.locationListRV.setAdapter(locationBasedAdapter);
                 locationBasedAdapter.notifyDataSetChanged();

@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
 
-public class GetTimeEventByIdTask extends AsyncTask<Long,Void, TimeBasedEvent> {
+public class GetTimeEventByIdTask extends AsyncTask<String,Void, TimeBasedEvent> {
     TimeBasedEventDao timeBasedEventDao;
 
     public GetTimeEventByIdTask(final TimeBasedEventDao timeBasedEventDao) {
@@ -13,7 +13,7 @@ public class GetTimeEventByIdTask extends AsyncTask<Long,Void, TimeBasedEvent> {
     }
 
     @Override
-    protected TimeBasedEvent doInBackground(Long... longs) {
-        return timeBasedEventDao.getEventById(longs[0]);
+    protected TimeBasedEvent doInBackground(String... strings) {
+        return timeBasedEventDao.getEventById(strings[0]);
     }
 }

@@ -28,30 +28,24 @@ public class LocationBasedEventRepository {
         locationBasedEventDao=dataBase.locationBasedEventDao();
 
     }
-    public long insert(LocationBasedEvent event){
+    public void insert(LocationBasedEvent event){
         LocationEventInsertTask locationEventInsertTask=new LocationEventInsertTask(locationBasedEventDao);
-            try {
-                row_id=locationEventInsertTask.execute(event).get();
-            } catch (ExecutionException e){
-                e.printStackTrace();
-            }
-            catch (InterruptedException e){
-                e.printStackTrace();
-            }
-        return row_id;
+        locationEventInsertTask.execute(event);
+
     }
 
     public void delete(LocationBasedEvent event){
 
     }
 
-    public void deleteById(long id){
+    public void deleteById(String id){
         LocationEventDeleteTask locationEventDeleteTask=new LocationEventDeleteTask(locationBasedEventDao);
         locationEventDeleteTask.execute(id);
     }
     public void deleteAllEvents(){
         locationBasedEventDao.deleteAllEvents();
     }
+
     public LiveData<List<LocationBasedEvent>> getAllEvents(){
         GetAllLocationEventTask allLocationEventTask=new GetAllLocationEventTask(locationBasedEventDao);
         try {
@@ -69,7 +63,7 @@ public class LocationBasedEventRepository {
         locationEventUpdateTask.execute(event);
 
     }
-    public LocationBasedEvent getEventById(long id){
+    public LocationBasedEvent getEventById(String id){
         GetLocationEventByIdTask getLocationEventByIdTask =new GetLocationEventByIdTask(locationBasedEventDao);
 
         try {

@@ -13,7 +13,9 @@ public class TimeOverReciever extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        long eventId=intent.getLongExtra(EVENT,0);
+        String eventId=intent.getStringExtra(EVENT);
+        Log.e("time over","triggerd");
+        Log.e("time event",eventId);
         NormalIntentService.enqueueJob(context,new Intent(context,NormalIntentService.class),eventId);
     }
 }

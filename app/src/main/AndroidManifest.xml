@@ -35,6 +35,8 @@
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name=".Service.AlertIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE"></service>
+        <service android:name=".Service.GeofenceTransitionsJobIntentService"></service>
+        <service android:name=".Service.MessageSendingService"></service>
 
         <activity android:name=".View.MainActivity">
             <intent-filter>
@@ -70,7 +72,10 @@
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".BroadCastReciver.LocationBasedEventReciever"/>
+        <receiver android:name=".BroadCastReciver.LocationBasedEventReciever"
+            android:exported="false"
+            android:enabled="true">
+        </receiver>
     </application>
 
 </manifest>

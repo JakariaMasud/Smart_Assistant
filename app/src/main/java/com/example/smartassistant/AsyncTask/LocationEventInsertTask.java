@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import com.example.smartassistant.Dao.LocationBasedEventDao;
 import com.example.smartassistant.Model.LocationBasedEvent;
 
-public class LocationEventInsertTask extends AsyncTask<LocationBasedEvent,Void,Long> {
+public class LocationEventInsertTask extends AsyncTask<LocationBasedEvent,Void,Void> {
     LocationBasedEventDao locationBasedEventDao;
 
     public LocationEventInsertTask(final LocationBasedEventDao locationBasedEventDao) {
@@ -13,8 +13,9 @@ public class LocationEventInsertTask extends AsyncTask<LocationBasedEvent,Void,L
     }
 
     @Override
-    protected Long doInBackground(LocationBasedEvent... locationBasedEvents) {
-        return locationBasedEventDao.addEvent(locationBasedEvents[0]);
+    protected Void doInBackground(LocationBasedEvent... locationBasedEvents) {
+         locationBasedEventDao.addEvent(locationBasedEvents[0]);
+         return null;
     }
 
 }

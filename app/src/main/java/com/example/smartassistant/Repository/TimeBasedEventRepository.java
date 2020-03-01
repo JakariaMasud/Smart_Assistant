@@ -25,28 +25,16 @@ public class TimeBasedEventRepository {
         timeBasedEventDao=dataBase.timeBasedEventDao();
 
     }
-    public long insert(TimeBasedEvent event){
+    public void insert(TimeBasedEvent event){
         TimeEventInsertTask insertTask=new TimeEventInsertTask(timeBasedEventDao);
-        long row_id = 0;
-        try {
-            row_id=insertTask.execute(event).get();
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return row_id ;
+        insertTask.execute(event);
 
     }
 
     public void delete(TimeBasedEvent event){
-
-
     }
 
-    public void deleteById(long id){
+    public void deleteById(String id){
 
         TimeEventDeleteTask timeEventDeleteTask=new TimeEventDeleteTask(timeBasedEventDao);
         timeEventDeleteTask.execute(id);
@@ -70,7 +58,7 @@ public class TimeBasedEventRepository {
         TimeEventUpdateTask timeEventUpdateTask=new TimeEventUpdateTask(timeBasedEventDao);
         timeEventUpdateTask.execute();
     }
-    public TimeBasedEvent getEventById(long id){
+    public TimeBasedEvent getEventById(String id){
         GetTimeEventByIdTask getTimeEventByIdTask =new GetTimeEventByIdTask(timeBasedEventDao);
 
         try {

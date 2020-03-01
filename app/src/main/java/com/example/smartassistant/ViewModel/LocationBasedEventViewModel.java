@@ -24,9 +24,8 @@ public class LocationBasedEventViewModel extends AndroidViewModel {
         return allEvents;
     }
 
-    public long insert(LocationBasedEvent event){
-        long row_id=LocationBasedEventRepository.insert(event);
-        return row_id;
+    public void insert(LocationBasedEvent event){
+        LocationBasedEventRepository.insert(event);
     }
 
     public void update(LocationBasedEvent event){
@@ -38,11 +37,11 @@ public class LocationBasedEventViewModel extends AndroidViewModel {
     public void deleteAllEvents(){
         LocationBasedEventRepository.deleteAllEvents();
     }
-    public void deleteById(long id){
+    public void deleteById(String id){
         LocationBasedEventRepository.deleteById(id);
     }
 
-    public LocationBasedEvent getById(long id){
+    public LocationBasedEvent getById(String id){
         return LocationBasedEventRepository.getEventById(id);
     }
 }
