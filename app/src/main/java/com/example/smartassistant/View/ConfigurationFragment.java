@@ -23,6 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.smartassistant.R;
 import com.example.smartassistant.databinding.FragmentConfigurationBinding;
 import com.google.android.material.chip.Chip;
@@ -83,8 +85,6 @@ public class ConfigurationFragment extends Fragment {
             SubscriptionManager subscriptionManager = SubscriptionManager.from(getContext());
             List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
             int totalSim=subscriptionInfoList.size();
-            Log.e("all sim",subscriptionInfoList.toString());
-            Log.e("all sim", String.valueOf(subscriptionInfoList.size()));
             for(int i=0;i<totalSim;i++){
                 Chip chip=new Chip(getContext());
                 int id=View.generateViewId();
@@ -105,13 +105,11 @@ public class ConfigurationFragment extends Fragment {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
                     if(checkedId==idList.get(0)){
-                        selectedSim=0;
+                        selectedSim=idList.get(0);
                     }
                     else if(checkedId==idList.get(1)){
-                        selectedSim=1;
+                        selectedSim=idList.get(1);
                     }
-
-
 
             }
         });
@@ -145,16 +143,23 @@ public class ConfigurationFragment extends Fragment {
                         Snackbar.make(configurationBinding.configurationLayout,"you must select a sim",Snackbar.LENGTH_LONG).show();
                     }
                     else {
-                        sfEditor.putString("msgText",msgText);
-                        sfEditor.putString("notificationTitle",notificationTitle);
-                        sfEditor.putString("notificationDescription",notificationDescription);
-                        sfEditor.putBoolean("isConfigured",true);
-                        sfEditor.commit();
-                        navController.navigate(R.id.action_configurationFragment_to_home);
+                        saveTheData();
                     }
                 }
             }
         }
+
+    }
+
+    private void saveTheData() {
+        sfEditor.putString("msgText",msgText);
+        sfEditor.putString("notificationTitle",notificationTitle);
+        sfEditor.putString("notificationDescription",notificationDescription);
+        sfEditor.putBoolean("isConfigured",true);
+        sfEditor.putInt("selectedSim",selectedSim);
+        sfEditor.commit();
+        Toast.makeText(getContext(),"successfully configured",Toast.LENGTH_LONG).show();
+       navController.navigate(ConfigurationFragmentDirections.actionConfigurationToHome());
 
     }
 }

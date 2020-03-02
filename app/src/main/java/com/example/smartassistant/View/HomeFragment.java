@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,8 +79,9 @@ public class HomeFragment extends Fragment{
         navController= Navigation.findNavController(view);
         preferences=getActivity().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         boolean hasData =preferences.contains("isConfigured");
+        Log.e("has data",String.valueOf(hasData));
         if(!hasData){
-            navController.navigate(R.id.action_home_to_configurationFragment);
+            navController.navigate(HomeFragmentDirections.actionHomeToConfigurationFragment());
 
         }
         timeLayoutManager=new LinearLayoutManager(getContext());

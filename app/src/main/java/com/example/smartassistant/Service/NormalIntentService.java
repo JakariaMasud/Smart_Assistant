@@ -33,6 +33,7 @@ public class NormalIntentService extends JobIntentService {
         timeBasedEventDao=dataBase.timeBasedEventDao();
         sfEditor.putBoolean("isTimeEventActive",false);
         sfEditor.putString("activatedTimeEvent",null);
+        sfEditor.commit();
         event=timeBasedEventDao.getEventById(timeEventId);
         if(event.getType().equals("Once")){
             timeBasedEventDao.deleteById(event.getId());

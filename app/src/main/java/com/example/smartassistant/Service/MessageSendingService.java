@@ -10,6 +10,7 @@ import android.telephony.SmsManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -33,7 +34,6 @@ public class MessageSendingService extends JobIntentService {
     LocationBasedEventDao locationBasedEventDao;
     LocationBasedEvent locationBasedEvent;
     TimeBasedEvent timeBasedEvent;
-    List<Integer>idList;
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
@@ -56,7 +56,9 @@ public class MessageSendingService extends JobIntentService {
                         long currentTimeMillis= System.currentTimeMillis();
                         long dif=currentTimeMillis-timeBasedEvent.getSelectedTime();
                         if(dif<timeBasedEvent.getPeriod()*60*1000){
-                            sendMessage(0,phoneNumber,"this is sample text message");
+                            int selectedSim=preferences.getInt("selectedSim",111);
+                            String msgText=preferences.getString("msgText","I will call you back later");
+                            sendMessage(selectedSim,phoneNumber,msgText);
                         }
 
                     }
@@ -70,7 +72,9 @@ public class MessageSendingService extends JobIntentService {
                 if(isLocationEventActive){
                     locationEventId=preferences.getString("activatedLocationEvent",null);
                     if (locationEventId != null) {
-                        sendMessage(0,phoneNumber,"you have entered the area");
+                        int selectedSim=preferences.getInt("selectedSim",111);
+                        String msgText=preferences.getString("msgText","I will call you back later");
+                        sendMessage(selectedSim,phoneNumber,msgText);
 
                     }
 
@@ -91,21 +95,13 @@ public class MessageSendingService extends JobIntentService {
 
     public void sendMessage(int simNo,String PhoneNumber,String message) {
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
-            SubscriptionManager subscriptionManager = SubscriptionManager.from(getApplicationContext());
-            List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
-            for(SubscriptionInfo info:subscriptionInfoList){
-                idList.add(info.getSubscriptionId());
-
-                Log.e("id","subsciption Id :"+info.getSubscriptionId());
-
-            }
-            SmsManager.getSmsManagerForSubscriptionId(idList.get(simNo))
-                    .sendTextMessage("0167009714",null,"Hello",null,null);
+            SmsManager.getSmsManagerForSubscriptionId(simNo)
+                    .sendTextMessage(phoneNumber,null,message,null,null);
+        Toast.makeText(getApplicationContext(),"Message sent",Toast.LENGTH_LONG).show();
 
         }
 
 
 
     }
-}
+

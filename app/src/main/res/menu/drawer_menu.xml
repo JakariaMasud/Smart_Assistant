@@ -16,7 +16,7 @@
         android:menuCategory="secondary">
     </item>
     <item
-        android:id="@id/configuration"
+        android:id="@id/Editconfiguration"
         android:title="Configure App"
         android:menuCategory="secondary">
     </item>
