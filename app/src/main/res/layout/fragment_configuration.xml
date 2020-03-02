@@ -12,11 +12,11 @@
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Message to be sent to caller during Event"
             app:boxCornerRadiusTopEnd="4dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:inputType="text"
+                android:hint="Message to be Sent To Caller During Event"
                 android:layout_width="match_parent"
                 android:id="@+id/messageET"
                 android:layout_height="wrap_content"
@@ -25,11 +25,11 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/notification_titleTF"
+          android:hint="Notificaton Title"
             android:layout_margin="10dp"
             android:layout_below="@id/messageTF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Notification Title"
             app:boxCornerRadiusTopEnd="4dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -45,10 +45,12 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/notification_desTF"
             android:layout_margin="10dp"
+            android:hint="Notificaton Description"
+            app:helperTextEnabled="true"
+            app:helperText="Notification Desciption"
             android:layout_below="@id/notification_titleTF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Notification description"
             app:boxCornerRadiusTopEnd="4dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -87,7 +89,7 @@
                 android:layout_height="70dp"
                 app:singleSelection="true"
                 app:singleLine="true"
-                app:chipSpacingHorizontal="32dp"/>
+                app:chipSpacingHorizontal="25dp"/>
         </HorizontalScrollView>
 
         <com.google.android.material.button.MaterialButton
@@ -102,6 +104,12 @@
             android:layout_height="wrap_content"
             android:text="done"
            />
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/configuration_progress"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ProgressBar>
 
     </RelativeLayout>
 </layout>

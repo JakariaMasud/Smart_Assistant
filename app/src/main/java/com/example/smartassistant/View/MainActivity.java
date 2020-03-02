@@ -1,11 +1,15 @@
 package com.example.smartassistant.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar customToolbar;
     ActivityMainBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +35,20 @@ public class MainActivity extends AppCompatActivity {
                         .setDrawerLayout(binding.drawerLayout)
                         .build();
         NavigationUI.setupWithNavController(binding.navigationView,navController);
-        NavigationUI.setupActionBarWithNavController(MainActivity.this,navController,appBarConfiguration);
+        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                if(destination.getId()==R.id.configuration){
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                }
+                else {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                }
+            }
+        });
+
+
     }
     @Override
     public boolean onSupportNavigateUp() {

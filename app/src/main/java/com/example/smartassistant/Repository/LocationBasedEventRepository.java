@@ -20,7 +20,6 @@ import java.util.concurrent.ExecutionException;
 public class LocationBasedEventRepository {
     private LiveData<List<LocationBasedEvent>> allEvents;
     private LocationBasedEventDao locationBasedEventDao;
-    private long row_id;
     private LocationBasedEvent event;
 
     public LocationBasedEventRepository(Application application) {
@@ -49,12 +48,13 @@ public class LocationBasedEventRepository {
     public LiveData<List<LocationBasedEvent>> getAllEvents(){
         GetAllLocationEventTask allLocationEventTask=new GetAllLocationEventTask(locationBasedEventDao);
         try {
-            allEvents= allLocationEventTask.execute().get();
+            this.allEvents = allLocationEventTask.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
         return allEvents;
     }

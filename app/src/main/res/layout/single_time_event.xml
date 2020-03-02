@@ -14,11 +14,10 @@
             <TextView
                 android:id="@+id/titleTV"
                 android:padding="5dp"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="title"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 android:textColor="#000"
                 android:textSize="17sp"/>
             <LinearLayout

@@ -107,6 +107,7 @@ public class AddLocationEventFragment extends Fragment  {
         locationEventBinding.addBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                locationEventBinding.locationProgress.setVisibility(View.VISIBLE);
                 checkingUserInput();
 
             }
@@ -136,7 +137,9 @@ public class AddLocationEventFragment extends Fragment  {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getContext(),"successfully  added to geo fences",Toast.LENGTH_LONG).show();
+                locationEventBinding.locationProgress.setVisibility(View.GONE);
                 locationBasedEventViewModel.insert(event);
+                locationEventBinding.locationProgress.setVisibility(View.GONE);
                 navController.navigate(R.id.action_addLocationEvent_to_home);
 
 
@@ -158,14 +161,20 @@ public class AddLocationEventFragment extends Fragment  {
         title=locationEventBinding.titleET.getText().toString();
         if(TextUtils.isEmpty(title)){
             locationEventBinding.titleET.setError("title field can not bee empty");
+            locationEventBinding.locationProgress.setVisibility(View.GONE);
+            return;
         }
         else {
             if(TextUtils.isEmpty(radius)){
                 locationEventBinding.areaET.setError("area field  can not be empty ");
+                locationEventBinding.locationProgress.setVisibility(View.GONE);
+                return;
             }
             else {
                 if (TextUtils.isEmpty(address)) {
                     Snackbar.make(locationEventBinding.rootLayoutLocation, "must select a location", Snackbar.LENGTH_LONG).show();
+                    locationEventBinding.locationProgress.setVisibility(View.GONE);
+                    return;
                 } else {
                     Snackbar.make(locationEventBinding.rootLayoutLocation, "checking successful", Snackbar.LENGTH_LONG).show();
                     RADIUS = Float.parseFloat(radius.trim());

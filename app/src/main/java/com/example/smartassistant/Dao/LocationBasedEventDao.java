@@ -27,13 +27,13 @@ public interface LocationBasedEventDao {
     @Update
     public void updateEvent(LocationBasedEvent event);
 
-    @Query("SELECT * FROM LOCATION_BASED_TABLE WHERE id =:id")
+    @Query("SELECT * FROM location_based_table WHERE id =:id")
     public LocationBasedEvent getEventById(String id);
 
-    @Query("DELETE  FROM LOCATION_BASED_TABLE WHERE id=:id")
+    @Query("DELETE  FROM location_based_table WHERE id=:id")
     public void deleteById(String id);
 
-    @Query("DELETE  FROM LOCATION_BASED_TABLE")
+    @Query("DELETE  FROM location_based_table")
     public void deleteAllEvents();
 
 }

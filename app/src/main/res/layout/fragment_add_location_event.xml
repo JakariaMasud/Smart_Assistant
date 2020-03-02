@@ -74,7 +74,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/areaET"
                 android:layout_width="match_parent"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </com.google.android.material.textfield.TextInputLayout>

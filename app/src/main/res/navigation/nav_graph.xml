@@ -52,7 +52,15 @@
         android:id="@+id/Editconfiguration"
         android:name="com.example.smartassistant.View.EditConfigurationFragment"
         android:label="Edit Configuration"
-        tools:layout="@layout/fragment_edit_configuration"></fragment>
+        tools:layout="@layout/fragment_edit_configuration">
+        <action
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            android:id="@+id/action_editConfiguration_to_home"
+            app:destination="@id/home" />
+    </fragment>
     <fragment
         android:id="@+id/emargencyHelpLine"
         android:name="com.example.smartassistant.View.EmargencyHelpLineFragment"
@@ -78,6 +86,12 @@
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_configuration_self"
+            app:destination="@id/configuration" />
+        <action
+            android:id="@+id/action_configuration_to_home2"
+            app:destination="@id/home" />
     </fragment>
 
 </navigation>

@@ -117,6 +117,7 @@ public class ConfigurationFragment extends Fragment {
         configurationBinding.doneBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                configurationBinding.configurationProgress.setVisibility(View.VISIBLE);
                 checkingUserInput();
             }
         });
@@ -129,18 +130,26 @@ public class ConfigurationFragment extends Fragment {
         notificationDescription=configurationBinding.notificationDesET.getText().toString().trim();
         if(TextUtils.isEmpty(msgText)){
             configurationBinding.messageET.setError("This field can not be empty");
+            configurationBinding.configurationProgress.setVisibility(View.GONE);
+            return;
         }
         else{
             if(TextUtils.isEmpty(notificationTitle)){
                 configurationBinding.notificationTitleET.setError("Title field must not be empty");
+                configurationBinding.configurationProgress.setVisibility(View.GONE);
+                return;
             }
             else{
                 if(TextUtils.isEmpty(notificationDescription)){
                     configurationBinding.notificationDesET.setError("Description should be given");
+                    configurationBinding.configurationProgress.setVisibility(View.GONE);
+                    return;
                 }
                 else{
                     if(selectedSim==111){
                         Snackbar.make(configurationBinding.configurationLayout,"you must select a sim",Snackbar.LENGTH_LONG).show();
+                        configurationBinding.configurationProgress.setVisibility(View.GONE);
+                        return;
                     }
                     else {
                         saveTheData();
@@ -159,7 +168,8 @@ public class ConfigurationFragment extends Fragment {
         sfEditor.putInt("selectedSim",selectedSim);
         sfEditor.commit();
         Toast.makeText(getContext(),"successfully configured",Toast.LENGTH_LONG).show();
-       navController.navigate(ConfigurationFragmentDirections.actionConfigurationToHome());
+        configurationBinding.configurationProgress.setVisibility(View.GONE);
+       navController.navigate(R.id.action_configuration_to_home);
 
     }
 }
