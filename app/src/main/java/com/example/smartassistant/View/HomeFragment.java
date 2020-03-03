@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.smartassistant.Adapter.EventFragmentAdapter;
 import com.example.smartassistant.Adapter.LocationBasedAdapter;
 import com.example.smartassistant.Adapter.TimeBasedAdapter;
 import com.example.smartassistant.Model.LocationBasedEvent;
@@ -59,6 +60,7 @@ public class HomeFragment extends Fragment {
     NavController navController;
     List<LocationBasedEvent> locationBasedEventList;
     List<TimeBasedEvent> timeBasedEventList;
+    EventFragmentAdapter adapter;
 
 
     public HomeFragment() {
@@ -86,45 +88,10 @@ public class HomeFragment extends Fragment {
         if (!hasData) {
             navController.navigate(HomeFragmentDirections.actionHomeToConfigurationFragment());
         }
-        timeLayoutManager = new LinearLayoutManager(getContext());
-        locationLayoutManager = new LinearLayoutManager(getContext());
-        homeBinding.timeListRV.setLayoutManager(timeLayoutManager);
-        homeBinding.locationListRV.setLayoutManager(locationLayoutManager);
-        timeBasedEventViewModel = new ViewModelProvider(this).get(TimeBasedEventViewModel.class);
-        locationBasedEventViewModel = new ViewModelProvider(this).get(LocationBasedEventViewModel.class);
-        timeBasedAdapter = new TimeBasedAdapter(timeBasedEventList);
-        homeBinding.timeListRV.setAdapter(timeBasedAdapter);
-        locationBasedAdapter = new LocationBasedAdapter(locationBasedEventList);
-        homeBinding.locationListRV.setAdapter(locationBasedAdapter);
-        timeBasedEventViewModel.getAllEvents().observe(this, new Observer<List<TimeBasedEvent>>() {
-            @Override
-            public void onChanged(List<TimeBasedEvent> eventList) {
-                timeBasedEventList.addAll(eventList);
-                if (locationBasedEventList.size() > 0 || timeBasedEventList.size() > 0) {
-                    homeBinding.noItemTV.setVisibility(View.GONE);
-                    timeBasedAdapter.notifyDataSetChanged();
+        adapter=new EventFragmentAdapter(getChildFragmentManager());
+        homeBinding.eventViewPager.setAdapter(adapter);
+        homeBinding.eventTabLayout.setupWithViewPager(homeBinding.eventViewPager);
 
-                } else {
-                    homeBinding.noItemTV.setVisibility(View.VISIBLE);
-                }
-
-
-
-            }
-        });
-        locationBasedEventViewModel.getAllEvents().observe(this, new Observer<List<LocationBasedEvent>>() {
-            @Override
-            public void onChanged(List<LocationBasedEvent> locationBasedEvents) {
-                locationBasedEventList.addAll(locationBasedEvents);
-                if (locationBasedEventList.size() >0 || timeBasedEventList.size() >0) {
-                    homeBinding.noItemTV.setVisibility(View.GONE);
-                    locationBasedAdapter.notifyDataSetChanged();
-                } else {
-                    homeBinding.noItemTV.setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
 
     }
 

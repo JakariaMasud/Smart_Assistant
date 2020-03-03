@@ -1,5 +1,6 @@
 package com.example.smartassistant.Adapter;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class LocationBasedAdapter extends RecyclerView.Adapter<LocationBasedAdapter.LocationBasedViewHolder> {
     List<LocationBasedEvent> eventList=new ArrayList<>();
+    OnEventClickListener listener;
 
     public LocationBasedAdapter(final List<LocationBasedEvent> eventList) {
         this.eventList = eventList;
@@ -43,11 +45,27 @@ public class LocationBasedAdapter extends RecyclerView.Adapter<LocationBasedAdap
         return eventList.size();
     }
 
-    public class LocationBasedViewHolder extends RecyclerView.ViewHolder {
+    public class LocationBasedViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         SingleLocationEventBinding singleLocationEventBinding;
         public LocationBasedViewHolder(@NonNull SingleLocationEventBinding itemView) {
             super(itemView.getRoot());
             singleLocationEventBinding=itemView;
+            singleLocationEventBinding.getRoot().setOnCreateContextMenuListener(this);
+            singleLocationEventBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            contextMenu.add(this.getAdapterPosition(),210,0,"Edit");
+            contextMenu.add(this.getAdapterPosition(),211,0,"Delete");
+        }
+    }
+    public void setOnEventClickListener(OnEventClickListener listener){
+        this.listener=listener;
     }
 }
