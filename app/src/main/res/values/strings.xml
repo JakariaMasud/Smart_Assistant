@@ -4,4 +4,58 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="helplineTitle">
+        <item>Central Hospital</item>
+        <item>Japan Bangladesh Friendship Hospital</item>
+        <item>Medinova Medical Services Ltd</item>
+        <item>Pangu Hospital</item>
+        <item>Samorita Hospital</item>
+        <item>Shahid Suhrawardy Hospital</item>
+        <item>Shishu Hospital</item>
+        <item>Dhaka Medical College Hospital</item>
+        <item>Gana Shastho Kendra</item>
+        <item>Islami Bank Hospital</item>
+        <item>P.G Hospital (BSMMU)</item>
+        <item>BIRDEM Hospital</item>
+        <item>Mitford Hospital</item>
+        <item>Mohakhali Hospital</item>
+        <item>Islamia Eye Hospital</item>
+    </string-array>
+    <string-array name="helplineAddress">
+        <item>House- 10/A (New-2), Road-5, Dhanmondi</item>
+        <item>House-27, Road-114, Gulshan-2, Dhaka</item>
+        <item>House-71/A, Road-5/A, Dhanmondi</item>
+        <item>Sher-e- Bangla Nagar, Dhaka-1207</item>
+        <item>69/D, Green Road, Dhaka</item>
+        <item>Sher-e-Bangla Nagar, College Gate,Dhaka</item>
+        <item>Sher-e-Bangla Nagar, Dhaka-120007</item>
+        <item>Dhaka Medical College, Dhaka</item>
+        <item>House 14/F, Road 6, Dhanmondi, Dhaka</item>
+        <item>34B, Outer Circular Road, Dhaka</item>
+        <item>Shahbag,Dhaka-1000</item>
+        <item>Shahbag Square,Dhaka 1000</item>
+        <item>Mitford, Dhaka-1100</item>
+        <item>Mohakhali, Dhaka 1212, Bangladesh</item>
+        <item>Sher e Bangla Nagar, Farmgate, Dhaka 1215</item>
+    </string-array>
+    <string-array name="helplinePhone">
+        <item>Tel: 9660015-19, Fax: 8619321</item>
+        <item>Tel: 8828855,8827575, Fax: 8826597</item>
+        <item>Tel: 8620353, 8624907-10</item>
+        <item>Tel: 9112150,9113041</item>
+        <item>Tel: 9131901</item>
+        <item>Tel: 9122560,-78,9112086</item>
+        <item>Tel: 8116061-2, 9119119, Fax: 9128308</item>
+        <item>Tel: 86266812-16, 8626818-25</item>
+        <item>Tel: 8617208, 8617383, 8620178</item>
+        <item>Tel: 9333739, 411730</item>
+        <item>Tel: 8614001-5, 8614545-9,8612550-4</item>
+        <item>Tel:8616641-5, 9661551</item>
+        <item>Tel:7319002-6</item>
+        <item>Tel:8811751</item>
+        <item>Tel:8112856, 9119315</item>
+
+    </string-array>
 </resources>
+
+

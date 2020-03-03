@@ -92,7 +92,7 @@ public class AddTimeEventFragment extends Fragment {
 
     }
 
-    @NeedsPermission({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE})
+    @NeedsPermission({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void settingUpListener() {
         NotificationManager notificationManager =
                 (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -281,7 +281,7 @@ public class AddTimeEventFragment extends Fragment {
 
 
 
-    @OnShowRationale({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE})
+    @OnShowRationale({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void showRationale(final PermissionRequest request) {
         new MaterialAlertDialogBuilder(getContext())
                 .setTitle("Permission needed")
@@ -304,12 +304,12 @@ public class AddTimeEventFragment extends Fragment {
 
     }
 
-    @OnPermissionDenied({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE})
+    @OnPermissionDenied({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void OnDenied() {
         Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
     }
 
-    @OnNeverAskAgain({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE})
+    @OnNeverAskAgain({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void onNeverAskAgain() {
         Toast.makeText(getContext(), "Never asking again", Toast.LENGTH_SHORT).show();
     }

@@ -3,6 +3,7 @@ package com.example.smartassistant.View;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -37,12 +38,19 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
 /**
  * A simple {@link Fragment} subclass.
  */
+@RuntimePermissions
 public class ConfigurationFragment extends Fragment {
     FragmentConfigurationBinding configurationBinding;
-    List<Integer>idList;
     SharedPreferences preferences;
     SharedPreferences.Editor sfEditor;
     NavController navController;
@@ -66,10 +74,16 @@ public class ConfigurationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        idList=new ArrayList<>();
         navController= Navigation.findNavController(view);
         preferences=getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         sfEditor=preferences.edit();
+        ConfigurationFragmentPermissionsDispatcher.settingUpUIWithPermissionCheck(this);
+
+
+
+    }
+    @NeedsPermission(Manifest.permission.READ_PHONE_STATE)
+    public void settingUpUI() {
         boolean hasData =preferences.contains("isConfigured");
         if(!hasData){
             new MaterialAlertDialogBuilder(getContext())
@@ -78,10 +92,7 @@ public class ConfigurationFragment extends Fragment {
                     .setPositiveButton("Ok", null)
                     .show();
         }
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
-            Log.e("sim","permission available");
-
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
             SubscriptionManager subscriptionManager = SubscriptionManager.from(getContext());
             List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
             int totalSim=subscriptionInfoList.size();
@@ -89,31 +100,20 @@ public class ConfigurationFragment extends Fragment {
                 Chip chip=new Chip(getContext());
                 int id=View.generateViewId();
                 chip.setId(id);
-                idList.add(id);
                 ChipDrawable drawable= ChipDrawable.createFromAttributes(getContext(),null,0,R.style.CustomChipChoice);
                 chip.setChipDrawable(drawable);
                 chip.setText(subscriptionInfoList.get(i).getCarrierName());
                 configurationBinding.slectionSimChipGroup.addView(chip);
             }
 
-
-
-
-
         }
         configurationBinding.slectionSimChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-                    if(checkedId==idList.get(0)){
-                        selectedSim=idList.get(0);
-                    }
-                    else if(checkedId==idList.get(1)){
-                        selectedSim=idList.get(1);
-                    }
+                 selectedSim=checkedId;
 
             }
         });
-
         configurationBinding.doneBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,4 +172,45 @@ public class ConfigurationFragment extends Fragment {
        navController.navigate(R.id.action_configuration_to_home);
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ConfigurationFragmentPermissionsDispatcher.onRequestPermissionsResult(ConfigurationFragment.this,requestCode,grantResults);
+    }
+
+    @OnShowRationale(Manifest.permission.READ_PHONE_STATE)
+    void showRationale(final PermissionRequest request) {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle("Permission needed")
+                .setMessage("App needs the permission for its service ")
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                request.proceed();
+                            }
+                        }
+                ).show();
+
+
+    }
+
+    @OnPermissionDenied(Manifest.permission.READ_PHONE_STATE)
+    void OnDenied() {
+        Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.READ_PHONE_STATE)
+    void onNeverAskAgain() {
+        Toast.makeText(getContext(), "Never asking again", Toast.LENGTH_SHORT).show();
+    }
+
+
 }
