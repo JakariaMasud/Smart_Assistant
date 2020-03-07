@@ -9,9 +9,7 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.example.smartassistant.Service.GeofenceTransitionsJobIntentService;
 import com.example.smartassistant.Worker.GeofenceTransitionWorker;
-import com.example.smartassistant.Worker.SilentWorker;
 import com.google.android.gms.location.GeofencingEvent;
 
 import static com.example.smartassistant.View.App.EVENT_ID;

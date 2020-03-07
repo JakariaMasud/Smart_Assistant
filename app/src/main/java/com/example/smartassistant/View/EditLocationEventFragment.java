@@ -194,7 +194,7 @@ public class EditLocationEventFragment extends Fragment {
                 locationBasedEventViewModel.insert(event);
                 Toast.makeText(getContext(),"successfully  updated the geo fences",Toast.LENGTH_LONG).show();
                 editLocationEventBinding.editLocationProgress.setVisibility(View.GONE);
-                navController.navigate(R.id.home);
+                navController.navigate(EditLocationEventFragmentDirections.actionEditLocationEventFragmentToHome());
 
 
             }

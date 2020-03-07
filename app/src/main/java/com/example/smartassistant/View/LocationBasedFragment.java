@@ -95,13 +95,17 @@ public class LocationBasedFragment extends Fragment {
         locationBasedEventViewModel.getAllEvents().observe(this, new Observer<List<LocationBasedEvent>>() {
             @Override
             public void onChanged(List<LocationBasedEvent> eventList) {
-                if(eventList.size()>0){
-                    locationBasedEventList.addAll(eventList);
+                    locationBasedEventList.clear();
+                    for (LocationBasedEvent event:eventList){
+                        locationBasedEventList.add(event);
+                    }
                     locationBasedAdapter.notifyDataSetChanged();
+                if(locationBasedEventList.size()<=0){
+                    locationBasedBinding.noItemTV.setVisibility(View.VISIBLE);
                 }
-
-
-
+                else {
+                    locationBasedBinding.noItemTV.setVisibility(View.GONE);
+                }
 
 
 
@@ -136,15 +140,14 @@ public class LocationBasedFragment extends Fragment {
     }
 
     private void deleteEvent(final LocationBasedEvent event) {
-        //delete from geo fence
 
+                 //delete from geo fence
       geofencingClient.removeGeofences(getGeofencePendingIntent(event.getId()))
               .addOnSuccessListener(new OnSuccessListener<Void>() {
           @Override
           public void onSuccess(Void aVoid) {
               //delete from database
               locationBasedEventViewModel.deleteById(event.getId());
-              locationBasedAdapter.notifyDataSetChanged();
               Toast.makeText(getContext(), "successfully deleted", Toast.LENGTH_SHORT).show();
 
 

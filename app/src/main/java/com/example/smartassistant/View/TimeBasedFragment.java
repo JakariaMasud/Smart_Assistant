@@ -96,13 +96,18 @@ public class TimeBasedFragment extends Fragment {
         timeBasedEventViewModel.getAllEvents().observe(this, new Observer<List<TimeBasedEvent>>() {
             @Override
             public void onChanged(List<TimeBasedEvent> eventList) {
-                if(eventList.size()>0){
-                    timeBasedEventList.addAll(eventList);
+
+                    timeBasedEventList.clear();
+                    for(TimeBasedEvent event:eventList){
+                        timeBasedEventList.add(event);
+                    }
                     timeBasedAdapter.notifyDataSetChanged();
-                }
-
-
-
+                    if(timeBasedEventList.size()<=0){
+                        timeBasedBinding.noItemTV.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        timeBasedBinding.noItemTV.setVisibility(View.GONE);
+                    }
 
 
             }
@@ -140,6 +145,8 @@ public class TimeBasedFragment extends Fragment {
     }
 
     private void deleteEvent(String id) {
+
+        //delete from alarm manager
         Intent eventIntent = new Intent(getContext(), TimeEventReciever.class);
         eventIntent.putExtra(EVENT,id);
         PendingIntent eventPendingIntent = PendingIntent.getBroadcast(getActivity(), 1, eventIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -152,8 +159,10 @@ public class TimeBasedFragment extends Fragment {
                 alarmManager.cancel(eventPendingIntent);
                 alarmManager.cancel(alertPendingIntent);
                 alarmManager.cancel(timeOverPendingIntent);
+
                 //delete from database
                 timeBasedEventViewModel.deleteById(id);
+
                 Toast.makeText(getContext(), "successfully deleted", Toast.LENGTH_SHORT).show();
 
 

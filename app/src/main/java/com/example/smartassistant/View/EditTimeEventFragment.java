@@ -1,7 +1,11 @@
 package com.example.smartassistant.View;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -18,6 +24,9 @@ import android.view.ViewGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.smartassistant.BroadCastReciver.AlertReciever;
+import com.example.smartassistant.BroadCastReciver.TimeEventReciever;
+import com.example.smartassistant.BroadCastReciver.TimeOverReciever;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
@@ -26,6 +35,8 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
+
+import static com.example.smartassistant.View.AddTimeEventFragment.EVENT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +51,8 @@ public class EditTimeEventFragment extends Fragment {
     private long selectedTime;
     private  int notificationBefore;
     private String timeAmPm;
-
+    AlarmManager alarmManager;
+    NavController navController;
 
     public EditTimeEventFragment() {
         // Required empty public constructor
@@ -58,13 +70,12 @@ public class EditTimeEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         timeBasedEventViewModel=new ViewModelProvider(this).get(TimeBasedEventViewModel.class);
         if(getArguments()!=null){
             eventId= EditLocationEventFragmentArgs.fromBundle(getArguments()).getEventId();
-
             settingUpUi();
-
-
         }
     }
 
@@ -189,9 +200,43 @@ public class EditTimeEventFragment extends Fragment {
     }
 
     private void updateEvent() {
+        //cancel from alarm manager
+        Intent eventIntent = new Intent(getContext(), TimeEventReciever.class);
+        eventIntent.putExtra(EVENT,eventId);
+        PendingIntent eventPendingIntent = PendingIntent.getBroadcast(getActivity(), 1, eventIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent alertIntent = new Intent(getContext(), AlertReciever.class);
+        alertIntent.putExtra(EVENT,eventId);
+        PendingIntent alertPendingIntent = PendingIntent.getBroadcast(getActivity(), 2, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent timeOverIntent = new Intent(getContext(), TimeOverReciever.class);
+        timeOverIntent.putExtra(EVENT,eventId);
+        PendingIntent timeOverPendingIntent = PendingIntent.getBroadcast(getActivity(), 3, timeOverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(eventPendingIntent);
+        alarmManager.cancel(alertPendingIntent);
+        alarmManager.cancel(timeOverPendingIntent);
+        //create updated event
         TimeBasedEvent timeBasedEvent=new TimeBasedEvent(eventId,title,type,period,selectedTime,notificationBefore,timeAmPm);
+        //set the alarm manager again
+        if (type.equals("Once")) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, selectedTime, eventPendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, selectedTime - notificationBefore * 60 * 1000, alertPendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, selectedTime + period * 60 * 1000, timeOverPendingIntent);
+
+        } else if (type.equals("Daily")) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime, AlarmManager.INTERVAL_DAY, eventPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime - notificationBefore * 60 * 1000, AlarmManager.INTERVAL_DAY, alertPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime + period * 60 * 1000, AlarmManager.INTERVAL_DAY, timeOverPendingIntent);
+
+
+        } else if (type.equals("Weekly")) {
+
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime, AlarmManager.INTERVAL_DAY * 7, eventPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime - notificationBefore * 60 * 1000, AlarmManager.INTERVAL_DAY * 7, alertPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime + period * 60 * 1000, AlarmManager.INTERVAL_DAY * 7, timeOverPendingIntent);
+        }
+        //update the database
         timeBasedEventViewModel.update(timeBasedEvent);
         Toast.makeText(getContext(), "Successfully updated the event", Toast.LENGTH_SHORT).show();
         editTimeEventBinding.edittimeProgress.setVisibility(View.GONE);
+        navController.navigate(EditTimeEventFragmentDirections.actionEditTimeEventFragmentToHome());
     }
 }

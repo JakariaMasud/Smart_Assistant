@@ -46,6 +46,7 @@ public class NormalWorker extends Worker {
         event = timeBasedEventDao.getEventById(timeEventId);
         if (event.getType().equals("Once")) {
             timeBasedEventDao.deleteById(event.getId());
+            Log.e("delete","event deleted");
         }
         AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         if (audioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
