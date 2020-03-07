@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/root_edit_location"
+        tools:context=".View.EditLocationEventFragment">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_titleTF"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperTextEnabled="true"
+            app:helperText="Title of The Event"
+            app:boxCornerRadiusTopEnd="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:id="@+id/edit_titleET"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_locationBTN"
+            android:layout_margin="10dp"
+            android:layout_below="@id/edit_titleTF"
+            android:textColor="@color/textColor"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Location"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_SelectedTV"
+            android:text="Selected Location"
+            android:textStyle="bold"
+            android:layout_below="@id/edit_locationBTN"
+            android:textColor="@color/colorPrimaryDark"/>
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/edit_selected_locationTV"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:padding="7dp"
+            android:layout_below="@id/edit_SelectedTV"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="No Location Selected"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_areaTF"
+            android:textColor="#000"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_selected_locationTV"
+            app:helperTextEnabled="true"
+            app:helperText="The Area to be Covered in Meter"
+            app:boxCornerRadiusTopEnd="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_areaET"
+                android:layout_width="match_parent"
+                android:inputType="number"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_addBTN"
+            android:layout_margin="10dp"
+            android:layout_below="@id/edit_areaTF"
+            android:textColor="@color/textColor"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="update"/>
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/edit_location_progress"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ProgressBar>
+
+    </RelativeLayout>
+</layout>

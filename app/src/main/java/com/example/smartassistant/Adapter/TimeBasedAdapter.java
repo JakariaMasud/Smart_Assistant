@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimeBasedAdapter extends RecyclerView.Adapter<TimeBasedAdapter.TimeBasedViewHolder> {
-    List<TimeBasedEvent> eventList=new ArrayList<>();
+    List<TimeBasedEvent> eventList;
     OnEventClickListener listener;
 
     public TimeBasedAdapter(final List<TimeBasedEvent> eventList) {
@@ -61,8 +61,8 @@ public class TimeBasedAdapter extends RecyclerView.Adapter<TimeBasedAdapter.Time
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            contextMenu.add(this.getAdapterPosition(),110,0,"Edit");
-            contextMenu.add(this.getAdapterPosition(),111,0,"Delete");
+            contextMenu.add(getAdapterPosition(),110,0,"Edit");
+            contextMenu.add(getAdapterPosition(),111,0,"Delete");
         }
 
 
@@ -70,4 +70,5 @@ public class TimeBasedAdapter extends RecyclerView.Adapter<TimeBasedAdapter.Time
     public void setOnEventClickListener(OnEventClickListener listener){
         this.listener=listener;
     }
+
 }

@@ -1,62 +1,61 @@
-package com.example.smartassistant.Service;
+package com.example.smartassistant.Worker;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.telephony.SmsManager;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.JobIntentService;
+import androidx.work.Data;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import com.example.smartassistant.AppDataBase;
-import com.example.smartassistant.Dao.LocationBasedEventDao;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
-import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.Model.TimeBasedEvent;
+import com.example.smartassistant.View.App;
 
-import java.util.List;
+import static android.content.Context.MODE_PRIVATE;
 
-public class MessageSendingService extends JobIntentService {
-   public static String phoneNumber;
+public class MessageSendingWorker extends Worker {
+    public static String phoneNumber;
     SharedPreferences preferences;
     String timeEventId,locationEventId;
     boolean isTimeEventActive;
     boolean isLocationEventActive;
     TimeBasedEventDao timeBasedEventDao;
-    LocationBasedEventDao locationBasedEventDao;
-    LocationBasedEvent locationBasedEvent;
     TimeBasedEvent timeBasedEvent;
+    public MessageSendingWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
 
+    @NonNull
     @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-        timeBasedEventDao= AppDataBase.getInstance(getApplicationContext()).timeBasedEventDao();
-        locationBasedEventDao=AppDataBase.getInstance(getApplicationContext()).locationBasedEventDao();
-        preferences=getSharedPreferences("MyPref",MODE_PRIVATE);
-        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+    public Result doWork() {
+        Data data=getInputData();
+        phoneNumber=data.getString("phone");
+        Log.e("phone",phoneNumber);
+        AppDataBase dataBase = AppDataBase.getInstance(App.getInstance());
+        timeBasedEventDao = dataBase.timeBasedEventDao();
+        preferences= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        AudioManager audioManager=(AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         int mode=audioManager.getRingerMode();
         int silent=AudioManager.RINGER_MODE_SILENT;
         int vibrate=AudioManager.RINGER_MODE_VIBRATE;
         int normal=AudioManager.RINGER_MODE_NORMAL;
-        if(mode==silent || mode==vibrate){
+        if(mode!=normal){
 
             if(preferences.contains("isTimeEventActive")){
                 isTimeEventActive=preferences.getBoolean("isTimeEventActive",false);
                 if(isTimeEventActive){
                     timeEventId=preferences.getString("activatedTimeEvent",null);
                     if(timeEventId!=null){
-                       timeBasedEvent= timeBasedEventDao.getEventById(timeEventId);
+                        timeBasedEvent= timeBasedEventDao.getEventById(timeEventId);
                         long currentTimeMillis= System.currentTimeMillis();
                         long dif=currentTimeMillis-timeBasedEvent.getSelectedTime();
-                        if(dif<timeBasedEvent.getPeriod()*60*1000){
-                            int selectedSim=preferences.getInt("selectedSim",111);
+                        if(dif<=timeBasedEvent.getPeriod()*60*1000){
+                            int selectedSim=preferences.getInt("selectedSim",0);
                             String msgText=preferences.getString("msgText","I will call you back later");
                             sendMessage(selectedSim,phoneNumber,msgText);
                         }
@@ -72,7 +71,7 @@ public class MessageSendingService extends JobIntentService {
                 if(isLocationEventActive){
                     locationEventId=preferences.getString("activatedLocationEvent",null);
                     if (locationEventId != null) {
-                        int selectedSim=preferences.getInt("selectedSim",111);
+                        int selectedSim=preferences.getInt("selectedSim",0);
                         String msgText=preferences.getString("msgText","I will call you back later");
                         sendMessage(selectedSim,phoneNumber,msgText);
 
@@ -82,26 +81,12 @@ public class MessageSendingService extends JobIntentService {
             }
 
         }
-
-
-
+        return Result.success();
     }
-
-    public static void enqueueMessage(Context context,Intent intent,String phone){
-        phoneNumber=phone;
-        enqueueWork(context,MessageSendingService.class,786,intent);
-
-    }
-
     public void sendMessage(int simNo,String PhoneNumber,String message) {
 
-            SmsManager.getSmsManagerForSubscriptionId(simNo)
-                    .sendTextMessage(phoneNumber,null,message,null,null);
-        Toast.makeText(getApplicationContext(),"Message sent",Toast.LENGTH_LONG).show();
-
-        }
-
-
+        SmsManager.getSmsManagerForSubscriptionId(simNo)
+                .sendTextMessage(phoneNumber,null,message,null,null);
 
     }
-
+}

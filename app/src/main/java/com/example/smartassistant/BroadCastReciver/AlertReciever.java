@@ -5,22 +5,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.smartassistant.Service.AlertIntentService;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
+
+import com.example.smartassistant.Worker.AlertWorker;
 
 import static com.example.smartassistant.View.AddTimeEventFragment.EVENT;
+import static com.example.smartassistant.View.App.EVENT_ID;
+
 
 public class AlertReciever extends BroadcastReceiver {
-    private static final String TAG = "Reciever";
     @Override
     public void onReceive(Context context, Intent intent) {
 
         String eventId=intent.getStringExtra(EVENT);
         Log.e("alert","triggerd");
         Log.e("time event",eventId.toString());
-         Intent alertIntent=new Intent(context, AlertIntentService.class);
-         AlertIntentService.enqueueAlert(context,alertIntent,eventId);
-
-
+        Data data=new Data.Builder()
+                .putString(EVENT_ID,eventId)
+                .build();
+        OneTimeWorkRequest oneTimeWorkRequest=
+                new OneTimeWorkRequest.Builder(AlertWorker.class)
+                        .setInputData(data).build();
+        WorkManager.getInstance(context).enqueue(oneTimeWorkRequest);
 
 
     }

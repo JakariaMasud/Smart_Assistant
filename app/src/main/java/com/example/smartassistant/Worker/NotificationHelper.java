@@ -1,4 +1,4 @@
-package com.example.smartassistant.Service;
+package com.example.smartassistant.Worker;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

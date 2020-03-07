@@ -61,8 +61,8 @@ public class LocationBasedAdapter extends RecyclerView.Adapter<LocationBasedAdap
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            contextMenu.add(this.getAdapterPosition(),210,0,"Edit");
-            contextMenu.add(this.getAdapterPosition(),211,0,"Delete");
+            contextMenu.add(getAdapterPosition(),210,0,"Edit");
+            contextMenu.add(getAdapterPosition(),211,0,"Delete");
         }
     }
     public void setOnEventClickListener(OnEventClickListener listener){

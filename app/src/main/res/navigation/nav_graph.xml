@@ -20,6 +20,20 @@
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_home_to_editTimeEventFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:destination="@id/editTimeEventFragment" />
+        <action
+            android:id="@+id/action_home_to_editLocationEventFragment"
+            app:destination="@id/editLocationEventFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/addTimeEvent"
@@ -92,6 +106,24 @@
         <action
             android:id="@+id/action_configuration_to_home2"
             app:destination="@id/home" />
+    </fragment>
+    <fragment
+        android:id="@+id/editLocationEventFragment"
+        android:name="com.example.smartassistant.View.EditLocationEventFragment"
+        android:label="Edit Location Event"
+        tools:layout="@layout/fragment_edit_location_event" >
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/editTimeEventFragment"
+        android:name="com.example.smartassistant.View.EditTimeEventFragment"
+        android:label="Edit Time Event"
+        tools:layout="@layout/fragment_edit_time_event" >
+        <argument
+            android:name="eventId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

@@ -5,7 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import com.example.smartassistant.Service.MessageSendingService;
+
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
+import com.example.smartassistant.Worker.MessageSendingWorker;
 
 public class PhoneStateReciever extends BroadcastReceiver {
     @Override
@@ -53,8 +58,13 @@ public class PhoneStateReciever extends BroadcastReceiver {
                         prev_state = state;
 
                         //Rejected or Missed call
-                        Intent intent=new Intent(context, MessageSendingService.class);
-                        MessageSendingService.enqueueMessage(context,intent,phoneNumber);
+                        Data data=new Data.Builder()
+                                .putString("phone",phoneNumber)
+                                .build();
+                        OneTimeWorkRequest oneTimeWorkRequest=
+                                new OneTimeWorkRequest.Builder(MessageSendingWorker.class)
+                                        .setInputData(data).build();
+                        WorkManager.getInstance(context).enqueue(oneTimeWorkRequest);
                     }
                     break;
             }

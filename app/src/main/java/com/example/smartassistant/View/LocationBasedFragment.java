@@ -1,6 +1,8 @@
 package com.example.smartassistant.View;
 
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,12 +26,17 @@ import android.widget.Toast;
 import com.example.smartassistant.Adapter.LocationBasedAdapter;
 import com.example.smartassistant.Adapter.OnEventClickListener;
 import com.example.smartassistant.Adapter.TimeBasedAdapter;
+import com.example.smartassistant.BroadCastReciver.LocationBasedEventReciever;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
 import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
 import com.example.smartassistant.databinding.FragmentLocationBasedBinding;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +52,8 @@ public class LocationBasedFragment extends Fragment {
     NavController navController;
     List<LocationBasedEvent> locationBasedEventList;
     FragmentLocationBasedBinding locationBasedBinding;
+    GeofencingClient geofencingClient;
+
 
 
     public LocationBasedFragment() {
@@ -62,6 +72,8 @@ public class LocationBasedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+        geofencingClient = LocationServices.getGeofencingClient(getActivity());
         locationBasedEventList=new ArrayList<>();
         locationLayoutManager = new LinearLayoutManager(getContext());
         locationBasedBinding.locationListRV.setLayoutManager(locationLayoutManager);
@@ -83,14 +95,13 @@ public class LocationBasedFragment extends Fragment {
         locationBasedEventViewModel.getAllEvents().observe(this, new Observer<List<LocationBasedEvent>>() {
             @Override
             public void onChanged(List<LocationBasedEvent> eventList) {
-                locationBasedEventList.addAll(eventList);
-                if ( locationBasedEventList.size()> 0) {
-                    locationBasedBinding.noItemTV.setVisibility(View.GONE);
+                if(eventList.size()>0){
+                    locationBasedEventList.addAll(eventList);
                     locationBasedAdapter.notifyDataSetChanged();
-
-                } else {
-                    locationBasedBinding.noItemTV.setVisibility(View.VISIBLE);
                 }
+
+
+
 
 
 
@@ -101,19 +112,57 @@ public class LocationBasedFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull final MenuItem item) {
         int position=item.getGroupId();
+        if(getUserVisibleHint()){
+            LocationBasedEvent event=  locationBasedEventList.get(position);
+            switch(item.getItemId()) {
+                case 210:
+                    HomeFragmentDirections.ActionHomeToEditLocationEventFragment action=HomeFragmentDirections.actionHomeToEditLocationEventFragment(event.getId());
+                    navController.navigate(action);
+                    return true;
+                case 211:
+                    deleteEvent(event);
 
-        switch(item.getItemId()) {
-            case 210:
-                Toast.makeText(getContext(),"edit location",Toast.LENGTH_LONG).show();
+                    return true;
 
-                return true;
-            case 211:
-                Toast.makeText(getContext(),"delete location",Toast.LENGTH_LONG).show();
-
-                return true;
-
-            default:
-                return super.onContextItemSelected(item);
+                default:
+                    return true;
+            }
         }
+        else{
+            return false;
+        }
+
+
+    }
+
+    private void deleteEvent(final LocationBasedEvent event) {
+        //delete from geo fence
+
+      geofencingClient.removeGeofences(getGeofencePendingIntent(event.getId()))
+              .addOnSuccessListener(new OnSuccessListener<Void>() {
+          @Override
+          public void onSuccess(Void aVoid) {
+              //delete from database
+              locationBasedEventViewModel.deleteById(event.getId());
+              locationBasedAdapter.notifyDataSetChanged();
+              Toast.makeText(getContext(), "successfully deleted", Toast.LENGTH_SHORT).show();
+
+
+          }
+      }).addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+
+          }
+      });
+
+
+    }
+    private PendingIntent getGeofencePendingIntent(String id) {
+        Intent intent = new Intent(getContext(), LocationBasedEventReciever.class);
+        intent.putExtra("locationEventId",id);
+        PendingIntent geofencePendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.
+                FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
     }
 }

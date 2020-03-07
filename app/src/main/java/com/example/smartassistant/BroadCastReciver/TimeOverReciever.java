@@ -5,9 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.smartassistant.Service.NormalIntentService;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
+import com.example.smartassistant.Worker.NormalWorker;
 
 import static com.example.smartassistant.View.AddTimeEventFragment.EVENT;
+import static com.example.smartassistant.View.App.EVENT_ID;
 
 public class TimeOverReciever extends BroadcastReceiver {
 
@@ -15,7 +20,12 @@ public class TimeOverReciever extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String eventId=intent.getStringExtra(EVENT);
         Log.e("time over","triggerd");
-        Log.e("time event",eventId);
-        NormalIntentService.enqueueJob(context,new Intent(context,NormalIntentService.class),eventId);
+        Data data=new Data.Builder()
+                .putString(EVENT_ID,eventId)
+                .build();
+        OneTimeWorkRequest oneTimeWorkRequest=
+                new OneTimeWorkRequest.Builder(NormalWorker.class)
+                        .setInputData(data).build();
+        WorkManager.getInstance(context).enqueue(oneTimeWorkRequest);
     }
 }

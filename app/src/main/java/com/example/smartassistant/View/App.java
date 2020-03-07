@@ -7,10 +7,14 @@ import android.content.Context;
 import android.os.Build;
 
 public class App extends Application {
+    private static App sInstance;
     public static final String CHANNEL_ID = "AlertChannel";
+    public static final String EVENT_ID="event_id";
     @Override
     public void onCreate() {
         super.onCreate();
+        sInstance = this;
+
         createNotificationChannels(getApplicationContext());
 
 
@@ -27,5 +31,8 @@ public class App extends Application {
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+    public static App getInstance() {
+        return App.sInstance;
     }
 }

@@ -16,11 +16,11 @@ public class TimeBasedEventViewModel extends AndroidViewModel{
     public TimeBasedEventViewModel(@NonNull Application application) {
         super(application);
         timeBasedEventRepository =new TimeBasedEventRepository(application);
-
+        allEvents=timeBasedEventRepository.getAllEvents();
     }
 
    public LiveData<List<TimeBasedEvent>> getAllEvents(){
-       allEvents=timeBasedEventRepository.getAllEvents();
+
         return allEvents;
     }
 

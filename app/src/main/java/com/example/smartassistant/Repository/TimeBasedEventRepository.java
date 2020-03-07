@@ -7,7 +7,6 @@ import com.example.smartassistant.AsyncTask.DeleteAllTimeEventTask;
 import com.example.smartassistant.AsyncTask.GetTimeEventByIdTask;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
-import com.example.smartassistant.AsyncTask.GetAllTimeEventTask;
 import com.example.smartassistant.AsyncTask.TimeEventDeleteTask;
 import com.example.smartassistant.AsyncTask.TimeEventInsertTask;
 import com.example.smartassistant.AsyncTask.TimeEventUpdateTask;
@@ -23,6 +22,7 @@ public class TimeBasedEventRepository {
     public TimeBasedEventRepository(Application application) {
         AppDataBase dataBase=AppDataBase.getInstance(application);
         timeBasedEventDao=dataBase.timeBasedEventDao();
+        allEvents=timeBasedEventDao.getAllEvents();
 
     }
     public void insert(TimeBasedEvent event){
@@ -43,14 +43,7 @@ public class TimeBasedEventRepository {
         timeBasedEventDao.deleteAllEvents();
     }
     public LiveData<List<TimeBasedEvent>> getAllEvents(){
-        GetAllTimeEventTask allTimeEventTask=new GetAllTimeEventTask(timeBasedEventDao);
-        try {
-          allEvents= allTimeEventTask.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         return allEvents;
     }
     public void updateEvent(TimeBasedEvent event){

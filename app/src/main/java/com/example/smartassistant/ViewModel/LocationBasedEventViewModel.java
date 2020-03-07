@@ -17,11 +17,11 @@ public class LocationBasedEventViewModel extends AndroidViewModel {
     public LocationBasedEventViewModel(@NonNull Application application) {
         super(application);
         LocationBasedEventRepository =new LocationBasedEventRepository(application);
-
+        allEvents=LocationBasedEventRepository.getAllEvents();
     }
 
     public LiveData<List<LocationBasedEvent>> getAllEvents(){
-        allEvents=LocationBasedEventRepository.getAllEvents();
+
         return allEvents;
     }
 

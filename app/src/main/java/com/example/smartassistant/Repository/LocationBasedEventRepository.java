@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData;
 
 import com.example.smartassistant.AppDataBase;
 import com.example.smartassistant.AsyncTask.DeleteAllLocationEventTask;
-import com.example.smartassistant.AsyncTask.GetAllLocationEventTask;
 import com.example.smartassistant.AsyncTask.GetLocationEventByIdTask;
 import com.example.smartassistant.AsyncTask.LocationEventDeleteTask;
 import com.example.smartassistant.AsyncTask.LocationEventInsertTask;
@@ -25,6 +24,7 @@ public class LocationBasedEventRepository {
     public LocationBasedEventRepository(Application application) {
         AppDataBase dataBase=AppDataBase.getInstance(application);
         locationBasedEventDao=dataBase.locationBasedEventDao();
+        allEvents=locationBasedEventDao.getAllEvents();
 
     }
     public void insert(LocationBasedEvent event){
@@ -46,15 +46,6 @@ public class LocationBasedEventRepository {
     }
 
     public LiveData<List<LocationBasedEvent>> getAllEvents(){
-        GetAllLocationEventTask allLocationEventTask=new GetAllLocationEventTask(locationBasedEventDao);
-        try {
-            this.allEvents = allLocationEventTask.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
 
         return allEvents;
     }

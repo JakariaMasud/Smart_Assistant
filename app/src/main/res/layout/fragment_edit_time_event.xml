@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/edit_time_layout"
+        tools:context=".View.EditTimeEventFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_time_titleTF"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperTextEnabled="true"
+            app:helperText="Title of the Event"
+            app:boxCornerRadiusTopEnd="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:id="@+id/edit_time_titleET"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_below="@+id/edit_time_titleTF"
+            android:id="@+id/edit_event_periodTF"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperTextEnabled="true"
+            app:helperText="Event Period in Minute"
+            app:boxCornerRadiusTopEnd="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:id="@+id/edit_event_periodET"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_select_timBTN"
+            android:layout_margin="10dp"
+            android:layout_below="@id/edit_event_periodTF"
+            android:textColor="@color/textColor"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Time"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_SelectedTV"
+            android:text="Selected Time"
+            android:textStyle="bold"
+            android:layout_below="@id/edit_select_timBTN"
+            android:textColor="@color/colorPrimaryDark"/>
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/edit_selected_timeTV"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:padding="7dp"
+            android:layout_below="@id/edit_SelectedTV"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="No Time Selected"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_notificationTF"
+            android:textColor="#000"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_selected_timeTV"
+            app:boxCornerRadiusTopEnd="2dp"
+            app:helperTextEnabled="true"
+            app:helperText="Notification Before The Event in Minute"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_notificationET"
+                android:layout_width="match_parent"
+                android:inputType="numberDecimal"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/select_typeTV"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:padding="7dp"
+            android:layout_below="@id/edit_notificationTF"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Select Type :"/>
+
+        <HorizontalScrollView
+            android:id="@+id/edit_horizontal_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_below="@id/select_typeTV"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+            <com.google.android.material.chip.ChipGroup
+
+                android:id="@+id/edit_slection_chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:singleLine="true"
+                app:chipSpacingHorizontal="32dp">
+
+                <com.google.android.material.chip.Chip
+                    app:chipCornerRadius="20dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:id="@+id/edit_once_chip"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="80dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"
+                    android:text="Once" />
+
+                <com.google.android.material.chip.Chip
+                    app:chipCornerRadius="20dp"
+                    android:id="@+id/edit_daily_chip"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="80dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"
+                    android:text="Daily" />
+
+                <com.google.android.material.chip.Chip
+
+                    app:chipCornerRadius="20dp"
+                    android:id="@+id/edit_weekly_chip"
+                    style="@style/CustomChipChoice"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textAlignment="center"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Weekly" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_time_addBTN"
+            android:layout_margin="10dp"
+            android:layout_below="@id/edit_horizontal_container"
+            android:textColor="@color/textColor"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"/>
+        />
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/edittime_progress"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ProgressBar>
+
+
+
+    </RelativeLayout>
+</layout>
