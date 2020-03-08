@@ -136,7 +136,7 @@ public class AddLocationEventFragment extends Fragment  {
         geofencingClient.addGeofences(request,geofencePendingIntent).addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getContext(),"successfully  added to geo fences",Toast.LENGTH_LONG).show();
+                Snackbar.make(locationEventBinding.rootLayoutLocation,"successfully  added to geo fences",Snackbar.LENGTH_SHORT);
                 locationBasedEventViewModel.insert(event);
                 locationEventBinding.locationProgress.setVisibility(View.GONE);
                 navController.navigate(R.id.action_addLocationEvent_to_home);
@@ -155,7 +155,7 @@ public class AddLocationEventFragment extends Fragment  {
     }
 
     private void checkingUserInput() {
-        Log.e("check","checking user input");
+
         String radius=locationEventBinding.areaET.getText().toString();
         title=locationEventBinding.titleET.getText().toString();
         if(TextUtils.isEmpty(title)){
@@ -175,7 +175,6 @@ public class AddLocationEventFragment extends Fragment  {
                     locationEventBinding.locationProgress.setVisibility(View.GONE);
                     return;
                 } else {
-                    Snackbar.make(locationEventBinding.rootLayoutLocation, "checking successful", Snackbar.LENGTH_LONG).show();
                     RADIUS = Float.parseFloat(radius.trim());
                     addGeofence();
                 }

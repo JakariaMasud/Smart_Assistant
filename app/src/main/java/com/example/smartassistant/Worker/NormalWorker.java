@@ -1,8 +1,10 @@
 package com.example.smartassistant.Worker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -25,9 +27,15 @@ public class NormalWorker extends Worker {
     private TimeBasedEventDao timeBasedEventDao;
     public static String timeEventId;
     TimeBasedEvent event;
+    PowerManager.WakeLock wakeLock;
 
     public NormalWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        PowerManager powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TESTING:WAKE LOCK");
+        wakeLock.acquire();
+        Log.e("wake lock accuired","done");
+
     }
 
     @NonNull
@@ -52,8 +60,11 @@ public class NormalWorker extends Worker {
         if (audioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
             audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
         }
+        wakeLock.release();
         return Result.success();
     }
+
+
 }
 
 

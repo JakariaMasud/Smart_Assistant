@@ -3,6 +3,7 @@ package com.example.smartassistant.Worker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,10 +16,15 @@ import static com.example.smartassistant.View.App.EVENT_ID;
 
 public class SilentWorker extends Worker {
     private static String eventId;
+    PowerManager.WakeLock wakeLock;
     SharedPreferences preferences;
     SharedPreferences.Editor sfEditor;
     public SilentWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        PowerManager powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TESTING:WAKE LOCK");
+        wakeLock.acquire();
+        Log.e("wake lock accuired","done");
     }
 
     @NonNull
@@ -37,6 +43,7 @@ public class SilentWorker extends Worker {
         if(mode==AudioManager.RINGER_MODE_NORMAL || mode==AudioManager.RINGER_MODE_VIBRATE){
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
         }
+        wakeLock.release();
         return Result.success();
     }
 }

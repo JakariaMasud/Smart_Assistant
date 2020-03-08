@@ -36,8 +36,8 @@ public class LocationBasedAdapter extends RecyclerView.Adapter<LocationBasedAdap
     public void onBindViewHolder(@NonNull LocationBasedViewHolder holder, int position) {
         LocationBasedEvent event=eventList.get(position);
         holder.singleLocationEventBinding.locationTitleTV.setText(event.getTitle());
-        holder.singleLocationEventBinding.addressTV.setText("elected Location:  "+event.getAddress());
-        holder.singleLocationEventBinding.areaTV.setText("area to be covered :"+event.getRadiusInMeter()+" meter");
+        holder.singleLocationEventBinding.addressTV.setText("Elected Location:  "+event.getAddress());
+        holder.singleLocationEventBinding.areaTV.setText("Area to be Covered : "+event.getRadiusInMeter()+" Meter");
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.smartassistant.Worker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.os.PowerManager;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -16,8 +17,13 @@ public class AlertWorker extends Worker {
     private static final String TAG = "AlertIntentService";
     private static String eventId;
     SharedPreferences preferences;
+    PowerManager.WakeLock wakeLock;
     public AlertWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        PowerManager powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TESTING:WAKE LOCK");
+        wakeLock.acquire();
+        Log.e("wake lock accuired","done");
     }
 
     @NonNull
@@ -34,6 +40,7 @@ public class AlertWorker extends Worker {
             String notificationDescription=preferences.getString("notificationDescription","your phone will be silence mode in a few moment");
             NotificationHelper.displayNotification(getApplicationContext(),notificationTitle,notificationDescription);
         }
+        wakeLock.release();
         return Result.success();
     }
 }

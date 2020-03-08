@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.example.smartassistant.BroadCastReciver.AlertReciever;
 import com.example.smartassistant.BroadCastReciver.TimeEventReciever;
 import com.example.smartassistant.BroadCastReciver.TimeOverReciever;
@@ -38,10 +37,8 @@ import com.example.smartassistant.databinding.FragmentAddTimeEventBinding;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Calendar;
 import java.util.UUID;
-
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -92,7 +89,7 @@ public class AddTimeEventFragment extends Fragment {
 
     }
 
-    @NeedsPermission({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    @NeedsPermission({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_CALL_LOG})
     public void settingUpListener() {
         NotificationManager notificationManager =
                 (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -281,7 +278,7 @@ public class AddTimeEventFragment extends Fragment {
 
 
 
-    @OnShowRationale({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    @OnShowRationale({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_CALL_LOG})
     void showRationale(final PermissionRequest request) {
         new MaterialAlertDialogBuilder(getContext())
                 .setTitle("Permission needed")
@@ -304,12 +301,12 @@ public class AddTimeEventFragment extends Fragment {
 
     }
 
-    @OnPermissionDenied({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    @OnPermissionDenied({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_CALL_LOG})
     void OnDenied() {
         Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
     }
 
-    @OnNeverAskAgain({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    @OnNeverAskAgain({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_CALL_LOG})
     void onNeverAskAgain() {
         Toast.makeText(getContext(), "Never asking again", Toast.LENGTH_SHORT).show();
     }

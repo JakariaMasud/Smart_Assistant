@@ -5,21 +5,29 @@
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
-    <uses-feature android:name="android.hardware.location.network" android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false"  />
+
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <application
         android:name=".View.App"
@@ -29,9 +37,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".Service.GeofenceTransitionsJobIntentService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true"></service>
 
         <activity android:name=".View.MainActivity">
             <intent-filter>
@@ -43,34 +48,38 @@
         <activity
             android:name="com.schibstedspain.leku.LocationPickerActivity"
             android:label="@string/leku_title_activity_location_picker"
+            android:parentActivityName=".View.MainActivity"
             android:theme="@style/MapTheme"
-            android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".View.MainActivity">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
+
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/leku_searchable" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".View.MainActivity" />
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />
 
         <receiver android:name=".BroadCastReciver.AlertReciever" />
         <receiver android:name=".BroadCastReciver.TimeEventReciever" />
-        <receiver android:name=".BroadCastReciver.TimeOverReciever"/>
-        <receiver android:name=".BroadCastReciver.PhoneStateReciever">
+        <receiver android:name=".BroadCastReciver.TimeOverReciever" />
+        <receiver android:name=".BroadCastReciver.PhoneStateReciever"
+            android:permission="android.permission.READ_PHONE_STATE" >>
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".BroadCastReciver.LocationBasedEventReciever"
-            android:exported="false"
-            android:enabled="true">
-        </receiver>
+        <receiver
+            android:name=".BroadCastReciver.LocationBasedEventReciever"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

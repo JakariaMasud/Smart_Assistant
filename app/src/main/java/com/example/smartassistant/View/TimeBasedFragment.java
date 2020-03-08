@@ -121,7 +121,6 @@ public class TimeBasedFragment extends Fragment {
             switch(item.getItemId()) {
                 case 110:
                     String id=timeBasedEventList.get(position).getId();
-                    Toast.makeText(getContext(),"edit time",Toast.LENGTH_LONG).show();
                     HomeFragmentDirections.ActionHomeToEditTimeEventFragment action=
                             HomeFragmentDirections.actionHomeToEditTimeEventFragment(id);
                     navController.navigate(action);

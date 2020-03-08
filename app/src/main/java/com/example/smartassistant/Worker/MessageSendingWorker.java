@@ -3,6 +3,7 @@ package com.example.smartassistant.Worker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.os.PowerManager;
 import android.telephony.SmsManager;
 import android.util.Log;
 
@@ -19,8 +20,9 @@ import com.example.smartassistant.View.App;
 import static android.content.Context.MODE_PRIVATE;
 
 public class MessageSendingWorker extends Worker {
-    public static String phoneNumber;
+    public  String phoneNumber;
     SharedPreferences preferences;
+    PowerManager.WakeLock wakeLock;
     String timeEventId,locationEventId;
     boolean isTimeEventActive;
     boolean isLocationEventActive;
@@ -28,6 +30,10 @@ public class MessageSendingWorker extends Worker {
     TimeBasedEvent timeBasedEvent;
     public MessageSendingWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        PowerManager powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TESTING:WAKE LOCK");
+        wakeLock.acquire();
+        Log.e("wake lock accuired","done");
     }
 
     @NonNull
@@ -81,12 +87,15 @@ public class MessageSendingWorker extends Worker {
             }
 
         }
+        wakeLock.release();
         return Result.success();
     }
     public void sendMessage(int simNo,String PhoneNumber,String message) {
+        Log.e("send","sending msg");
+        Log.e("send",phoneNumber);
 
         SmsManager.getSmsManagerForSubscriptionId(simNo)
-                .sendTextMessage(phoneNumber,null,message,null,null);
+                .sendTextMessage(PhoneNumber.trim(),null,message,null,null);
 
     }
 }

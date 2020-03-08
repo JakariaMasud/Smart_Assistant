@@ -33,10 +33,10 @@ public class TimeBasedAdapter extends RecyclerView.Adapter<TimeBasedAdapter.Time
     public void onBindViewHolder(@NonNull TimeBasedViewHolder holder, int position) {
         TimeBasedEvent event=eventList.get(position);
         holder.singleTimeEventBinding.titleTV.setText(event.getTitle());
-        holder.singleTimeEventBinding.timeTV.setText("selected time :"+event.getTimeAmPm());
-        holder.singleTimeEventBinding.periodTV.setText("event period :"+event.getPeriod()+"minutes");
-        holder.singleTimeEventBinding.typeTV.setText("event type : "+event.getType());
-        holder.singleTimeEventBinding.notificationTV.setText("notification before :"+String.valueOf(event.getNotificationBefore())+" minutes");
+        holder.singleTimeEventBinding.timeTV.setText("Selected Time :"+event.getTimeAmPm());
+        holder.singleTimeEventBinding.periodTV.setText("Event Period :"+event.getPeriod()+" Minutes");
+        holder.singleTimeEventBinding.typeTV.setText("Event type : "+event.getType());
+        holder.singleTimeEventBinding.notificationTV.setText("Notification Before :"+String.valueOf(event.getNotificationBefore())+" Minutes");
 
     }
 

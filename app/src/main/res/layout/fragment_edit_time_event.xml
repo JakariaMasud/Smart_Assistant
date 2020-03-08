@@ -11,7 +11,7 @@
             android:layout_height="match_parent">
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edit_time_titleTF"
-                android:layout_margin="10dp"
+                android:layout_margin="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:helperTextEnabled="true"
@@ -30,7 +30,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_below="@+id/edit_time_titleTF"
                 android:id="@+id/edit_event_periodTF"
-                android:layout_margin="10dp"
+                android:layout_margin="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:helperTextEnabled="true"
@@ -48,7 +48,7 @@
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/edit_select_timBTN"
-                android:layout_margin="10dp"
+                android:layout_margin="6dp"
                 android:layout_below="@id/edit_event_periodTF"
                 android:textColor="@color/textColor"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
@@ -57,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:text="Select Time"/>
             <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="7dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/edit_SelectedTV"
@@ -72,17 +72,17 @@
                 android:id="@+id/edit_selected_timeTV"
                 android:textColor="#000"
                 android:textSize="15sp"
-                android:padding="7dp"
+                android:padding="5dp"
                 android:layout_below="@id/edit_SelectedTV"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="No Time Selected"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edit_notificationTF"
                 android:textColor="#000"
-                android:layout_margin="10dp"
+                android:layout_margin="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/edit_selected_timeTV"
@@ -93,7 +93,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_notificationET"
                     android:layout_width="match_parent"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -102,9 +102,9 @@
                 android:id="@+id/select_typeTV"
                 android:textColor="#000"
                 android:textSize="15sp"
-                android:padding="7dp"
+                android:padding="5dp"
                 android:layout_below="@id/edit_notificationTF"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="Select Type :"/>
@@ -115,9 +115,9 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
                 android:layout_below="@id/select_typeTV"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="6dp">
                 <com.google.android.material.chip.ChipGroup
 
                     android:id="@+id/edit_slection_chip_group"
@@ -168,7 +168,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/edit_time_addBTN"
-                android:layout_margin="10dp"
+                android:layout_margin="6dp"
                 android:layout_below="@id/edit_horizontal_container"
                 android:textColor="@color/textColor"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"

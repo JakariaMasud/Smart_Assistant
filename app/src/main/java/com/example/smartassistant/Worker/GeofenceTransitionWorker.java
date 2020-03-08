@@ -3,6 +3,7 @@ package com.example.smartassistant.Worker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.os.PowerManager;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -13,12 +14,17 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.smartassistant.View.App.EVENT_ID;
 
 public class GeofenceTransitionWorker extends Worker {
+    PowerManager.WakeLock wakeLock;
     public String eventId;
     int geofenceTransition;
     SharedPreferences preferences;
     SharedPreferences.Editor sfEditor;
     public GeofenceTransitionWorker(@NonNull final Context context, @NonNull final WorkerParameters workerParams) {
         super(context, workerParams);
+        PowerManager powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TESTING:WAKE LOCK");
+        wakeLock.acquire();
+        Log.e("wake lock accuired","done");
     }
 
     @NonNull
@@ -42,6 +48,7 @@ public class GeofenceTransitionWorker extends Worker {
             sfEditor.putBoolean("isLocationEventActive",true);
             sfEditor.putString("activatedLocationEvent",eventId);
             sfEditor.commit();
+
             if(mode==normal || mode==vibrate)
             {
                 NotificationHelper.displayNotification(getApplicationContext(),"Geo fence Alert","you have entred your Location Event area");
@@ -67,6 +74,7 @@ public class GeofenceTransitionWorker extends Worker {
 
 
         }
+        wakeLock.release();
         return Result.success();
     }
 }
