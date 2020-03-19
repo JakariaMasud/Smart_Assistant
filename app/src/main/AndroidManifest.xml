@@ -62,7 +62,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".View.MainActivity" />
         </activity>
-
+        <activity android:name=".View.App"></activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />
@@ -71,7 +71,7 @@
         <receiver android:name=".BroadCastReciver.TimeEventReciever" />
         <receiver android:name=".BroadCastReciver.TimeOverReciever" />
         <receiver android:name=".BroadCastReciver.PhoneStateReciever"
-            android:permission="android.permission.READ_PHONE_STATE" >>
+            android:permission="android.permission.READ_PHONE_STATE" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>

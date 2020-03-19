@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Smart Assistant</string>
     <string name="api_key">AIzaSyAvHCTyXb0ef26I2i5SPwrygEnblHOweBs</string>
+    <string name="leku_title_activity_location_picker">Location Picker</string>
+    <string name="leku_load_location_error">Something went wrong. Please try again.</string>
+    <string name="leku_no_search_results">There are no results for your search</string>
+    <string name="leku_unknown_location">unknown location</string>
+    <string name="leku_voice_search_promp">Search by voice…</string>
+    <string name="leku_voice_search_extra_language">en-EN</string>
+    <string name="leku_toolbar_action_voice_title">Voice</string>
+    <string name="leku_search_hint">Search</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="helplineTitle">
         <item>Central Hospital</item>
@@ -57,28 +65,36 @@
 
     </string-array>
     <string-array name="nameList">
+        <item>Md. Sazzadur Ahamed</item>
+        <item>Arifur Rahman</item>
         <item>Md. Aklasur Rahman Robin</item>
         <item>Md mahedi hassan</item>
-        <item>Arifur Rahman</item>
-        <item>Md. Sazzadur Ahamed</item>
+
+
     </string-array>
     <string-array name="idList">
+        <item>Lecturer</item>
+        <item>Student Id : 162-15-7784</item>
         <item>Student Id : 162-15-7708</item>
         <item>Student Id : 161-15-7418 </item>
-        <item>Student Id : 162-15-7784</item>
-        <item>Lecturer</item>
+
+
     </string-array>
     <string-array name="emailList">
+        <item>sazzad.cse@diu.edu.bd</item>
+        <item>arifur15-7784@diu.edu.bd</item>
         <item>aklasur15-7708@diu.edu.bd</item>
         <item>mahedi15-7418@diu.edu.bd</item>
-        <item>arifur15-7784@diu.edu.bd</item>
-        <item>sazzad.cse@diu.edu.bd</item>
+
+
     </string-array>
     <string-array name="contactList">
+        <item>01625983595</item>
+        <item>01768589193</item>
         <item>01515200430</item>
         <item>01926985880</item>
-        <item>01768589193</item>
-        <item>01625983595</item>
+
+
     </string-array>
 </resources>
 

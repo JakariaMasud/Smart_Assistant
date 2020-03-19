@@ -13,10 +13,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sInstance = this;
+        sInstance =this;
 
         createNotificationChannels(getApplicationContext());
-
 
     }
     public static void createNotificationChannels (Context context) {

@@ -51,7 +51,7 @@ public class AboutUsFragment extends Fragment {
         idList=getResources().getStringArray(R.array.idList);
         contactList=getResources().getStringArray(R.array.contactList);
         emailList=getResources().getStringArray(R.array.emailList);
-        picList=new int []{R.drawable.robin,R.drawable.mehedi,R.drawable.arifur,R.drawable.teacher};
+        picList=new int []{R.drawable.teacher,R.drawable.arifur,R.drawable.robin,R.drawable.mehedi};
         adapter=new PersonAdapter(nameList,idList,contactList,emailList,picList);
         binding.personRV.setAdapter(adapter);
 

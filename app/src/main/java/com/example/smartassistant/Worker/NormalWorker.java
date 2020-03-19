@@ -1,6 +1,5 @@
 package com.example.smartassistant.Worker;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
@@ -15,7 +14,6 @@ import androidx.work.WorkerParameters;
 import com.example.smartassistant.AppDataBase;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
-import com.example.smartassistant.Repository.TimeBasedEventRepository;
 import com.example.smartassistant.View.App;
 
 import static android.content.Context.MODE_PRIVATE;
