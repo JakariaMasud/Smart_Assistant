@@ -25,13 +25,11 @@ import android.widget.Toast;
 
 import com.example.smartassistant.Adapter.LocationBasedAdapter;
 import com.example.smartassistant.Adapter.OnEventClickListener;
-import com.example.smartassistant.Adapter.TimeBasedAdapter;
 import com.example.smartassistant.BroadCastReciver.LocationBasedEventReciever;
 import com.example.smartassistant.Model.LocationBasedEvent;
-import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
-import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
+import com.example.smartassistant.DI.ViewModelFactory;
 import com.example.smartassistant.databinding.FragmentLocationBasedBinding;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
@@ -41,6 +39,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -48,11 +48,16 @@ public class LocationBasedFragment extends Fragment {
     LocationBasedAdapter locationBasedAdapter;
     LocationBasedEventViewModel locationBasedEventViewModel;
     RecyclerView.LayoutManager locationLayoutManager;
-    SharedPreferences preferences;
     NavController navController;
     List<LocationBasedEvent> locationBasedEventList;
     FragmentLocationBasedBinding locationBasedBinding;
+
+    @Inject
+    SharedPreferences preferences;
+    @Inject
     GeofencingClient geofencingClient;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
 
 
@@ -60,6 +65,11 @@ public class LocationBasedFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,11 +83,10 @@ public class LocationBasedFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        geofencingClient = LocationServices.getGeofencingClient(getActivity());
         locationBasedEventList=new ArrayList<>();
         locationLayoutManager = new LinearLayoutManager(getContext());
         locationBasedBinding.locationListRV.setLayoutManager(locationLayoutManager);
-        locationBasedEventViewModel = new ViewModelProvider(this).get(LocationBasedEventViewModel.class);
+        locationBasedEventViewModel = new ViewModelProvider(this,viewModelFactory).get(LocationBasedEventViewModel.class);
         locationBasedAdapter = new LocationBasedAdapter(locationBasedEventList);
         locationBasedBinding.locationListRV.setAdapter(locationBasedAdapter);
         locationBasedAdapter.setOnEventClickListener(new OnEventClickListener() {
@@ -92,7 +101,7 @@ public class LocationBasedFragment extends Fragment {
             }
         });
 
-        locationBasedEventViewModel.getAllEvents().observe(this, new Observer<List<LocationBasedEvent>>() {
+        locationBasedEventViewModel.getAllEvents().observe(getViewLifecycleOwner(), new Observer<List<LocationBasedEvent>>() {
             @Override
             public void onChanged(List<LocationBasedEvent> eventList) {
                     locationBasedEventList.clear();

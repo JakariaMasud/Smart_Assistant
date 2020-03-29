@@ -5,17 +5,21 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.Repository.TimeBasedEventRepository;
 import java.util.List;
 
-public class TimeBasedEventViewModel extends AndroidViewModel{
+import javax.inject.Inject;
+
+public class TimeBasedEventViewModel extends ViewModel {
     LiveData<List<TimeBasedEvent>> allEvents;
     TimeBasedEventRepository timeBasedEventRepository;
 
-    public TimeBasedEventViewModel(@NonNull Application application) {
-        super(application);
-        timeBasedEventRepository =new TimeBasedEventRepository(application);
+    @Inject
+    public TimeBasedEventViewModel(@NonNull TimeBasedEventRepository repository) {
+        timeBasedEventRepository =repository;
         allEvents=timeBasedEventRepository.getAllEvents();
     }
 

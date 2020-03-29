@@ -18,7 +18,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,10 +32,13 @@ import com.example.smartassistant.BroadCastReciver.TimeOverReciever;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
+import com.example.smartassistant.DI.ViewModelFactory;
 import com.example.smartassistant.databinding.FragmentTimeBasedBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static com.example.smartassistant.View.AddTimeEventFragment.EVENT;
 
@@ -50,14 +52,22 @@ public class TimeBasedFragment extends Fragment {
     NavController navController;
     List<TimeBasedEvent> timeBasedEventList;
     FragmentTimeBasedBinding timeBasedBinding;
+
+    @Inject
     AlarmManager alarmManager;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
 
 
     public TimeBasedFragment() {
         // Required empty public constructor
     }
-
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,12 +82,13 @@ public class TimeBasedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         navController = Navigation.findNavController(view);
-        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         timeBasedEventList=new ArrayList<>();
         timeLayoutManager = new LinearLayoutManager(getContext());
         timeBasedBinding.timeListRV.setLayoutManager(timeLayoutManager);
-        timeBasedEventViewModel = new ViewModelProvider(this).get(TimeBasedEventViewModel.class);
+        timeBasedEventViewModel = new ViewModelProvider(this,viewModelFactory).get(TimeBasedEventViewModel.class);
         timeBasedAdapter = new TimeBasedAdapter(timeBasedEventList);
         timeBasedBinding.timeListRV.setAdapter(timeBasedAdapter);
         timeBasedAdapter.setOnEventClickListener(new OnEventClickListener() {
@@ -93,7 +104,7 @@ public class TimeBasedFragment extends Fragment {
             }
         });
 
-        timeBasedEventViewModel.getAllEvents().observe(this, new Observer<List<TimeBasedEvent>>() {
+        timeBasedEventViewModel.getAllEvents().observe(getViewLifecycleOwner(), new Observer<List<TimeBasedEvent>>() {
             @Override
             public void onChanged(List<TimeBasedEvent> eventList) {
 
@@ -166,6 +177,8 @@ public class TimeBasedFragment extends Fragment {
 
 
     }
+
+
 }
 
 

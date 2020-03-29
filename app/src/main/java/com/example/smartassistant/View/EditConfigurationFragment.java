@@ -34,23 +34,34 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EditConfigurationFragment extends Fragment {
     FragmentEditConfigurationBinding editConfigurationBinding;
-    List<Integer> idList;
-    SharedPreferences preferences;
-    SharedPreferences.Editor sfEditor;
     NavController navController;
     int selectedSim=111;
     String msgText,notificationTitle,notificationDescription;
+    List<Integer> idList;
+    @Inject
+    SharedPreferences preferences;
+    @Inject
+    SharedPreferences.Editor sfEditor;
+
+
 
 
     public EditConfigurationFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,8 +76,6 @@ public class EditConfigurationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         idList=new ArrayList<>();
         navController= Navigation.findNavController(view);
-        preferences=getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        sfEditor=preferences.edit();
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
             Log.e("sim","permission available");
 

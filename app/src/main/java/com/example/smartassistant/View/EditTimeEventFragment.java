@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.smartassistant.BroadCastReciver.AlertReciever;
 import com.example.smartassistant.BroadCastReciver.TimeEventReciever;
 import com.example.smartassistant.BroadCastReciver.TimeOverReciever;
+import com.example.smartassistant.DI.ViewModelFactory;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
@@ -36,6 +37,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 import static com.example.smartassistant.View.AddTimeEventFragment.EVENT;
 
 /**
@@ -44,6 +47,7 @@ import static com.example.smartassistant.View.AddTimeEventFragment.EVENT;
 public class EditTimeEventFragment extends Fragment {
     FragmentEditTimeEventBinding editTimeEventBinding;
     String eventId;
+    NavController navController;
     TimeBasedEventViewModel timeBasedEventViewModel;
     private String title;
     private String type;
@@ -51,13 +55,21 @@ public class EditTimeEventFragment extends Fragment {
     private long selectedTime;
     private  int notificationBefore;
     private String timeAmPm;
+    @Inject
     AlarmManager alarmManager;
-    NavController navController;
+    @Inject
+    ViewModelFactory viewModelFactory;
+
 
     public EditTimeEventFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,8 +83,7 @@ public class EditTimeEventFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        timeBasedEventViewModel=new ViewModelProvider(this).get(TimeBasedEventViewModel.class);
+        timeBasedEventViewModel=new ViewModelProvider(this,viewModelFactory).get(TimeBasedEventViewModel.class);
         if(getArguments()!=null){
             eventId= EditLocationEventFragmentArgs.fromBundle(getArguments()).getEventId();
             settingUpUi();

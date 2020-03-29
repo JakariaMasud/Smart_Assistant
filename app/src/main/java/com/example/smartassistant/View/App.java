@@ -1,21 +1,31 @@
 package com.example.smartassistant.View;
-
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 
-public class App extends Application {
-    private static App sInstance;
+import com.example.smartassistant.DI.AppModule;
+import com.example.smartassistant.DI.ApplicationComponent;
+import com.example.smartassistant.DI.DaggerApplicationComponent;
+import com.example.smartassistant.DI.DataBaseModule;
+import com.example.smartassistant.DI.ServiceModule;
+
+public class App extends Application  {
+    private ApplicationComponent applicationComponent;
     public static final String CHANNEL_ID = "AlertChannel";
     public static final String EVENT_ID="event_id";
     @Override
     public void onCreate() {
         super.onCreate();
-        sInstance =this;
-
         createNotificationChannels(getApplicationContext());
+        applicationComponent= DaggerApplicationComponent.builder()
+                .appModule(new AppModule(this))
+                .dataBaseModule(new DataBaseModule())
+                .serviceModule(new ServiceModule())
+                .build();
+
+
 
     }
     public static void createNotificationChannels (Context context) {
@@ -31,7 +41,10 @@ public class App extends Application {
             notificationManager.createNotificationChannel(channel);
         }
     }
-    public static App getInstance() {
-        return App.sInstance;
+
+    public  ApplicationComponent getApplicationComponent() {
+
+        return applicationComponent;
     }
+
 }

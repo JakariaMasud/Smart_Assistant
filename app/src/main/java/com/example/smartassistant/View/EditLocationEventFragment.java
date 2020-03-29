@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.smartassistant.BroadCastReciver.LocationBasedEventReciever;
+import com.example.smartassistant.DI.ViewModelFactory;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
@@ -36,6 +37,8 @@ import com.schibstedspain.leku.LocationPickerActivity;
 
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import static android.app.Activity.RESULT_OK;
 import static com.schibstedspain.leku.LocationPickerActivityKt.LATITUDE;
 import static com.schibstedspain.leku.LocationPickerActivityKt.LOCATION_ADDRESS;
@@ -48,22 +51,33 @@ public class EditLocationEventFragment extends Fragment {
     FragmentEditLocationEventBinding editLocationEventBinding;
     String eventId;
     LocationBasedEventViewModel locationBasedEventViewModel;
+    NavController navController;
+    int LOCATION_REQUEST_CODE =123;
+    Intent locationPickerIntent;
+    private PendingIntent geofencePendingIntent;
     String title;
     float radiusInMeter;
     double latitude;
     double longitude;
     String address;
+
+    @Inject
     GeofencingClient geofencingClient;
-    NavController navController;
-    int LOCATION_REQUEST_CODE =123;
-    Intent locationPickerIntent;
-    private PendingIntent geofencePendingIntent;
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+
 
 
     public EditLocationEventFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,8 +90,7 @@ public class EditLocationEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        locationBasedEventViewModel=new ViewModelProvider(this).get(LocationBasedEventViewModel.class);
-        geofencingClient = LocationServices.getGeofencingClient(getContext());
+        locationBasedEventViewModel=new ViewModelProvider(this,viewModelFactory).get(LocationBasedEventViewModel.class);
         navController = Navigation.findNavController(view);
         if(getArguments()!=null){
             eventId= EditLocationEventFragmentArgs.fromBundle(getArguments()).getEventId();

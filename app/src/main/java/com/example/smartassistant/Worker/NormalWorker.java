@@ -10,26 +10,28 @@ import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
 import com.example.smartassistant.AppDataBase;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.View.App;
+import javax.inject.Inject;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.smartassistant.View.App.EVENT_ID;
 
 public class NormalWorker extends Worker {
-    SharedPreferences preferences;
-    SharedPreferences.Editor sfEditor;
-    private TimeBasedEventDao timeBasedEventDao;
-    public static String timeEventId;
     TimeBasedEvent event;
     PowerManager.WakeLock wakeLock;
+    SharedPreferences preferences;
+    SharedPreferences.Editor sfEditor;
+   TimeBasedEventDao timeBasedEventDao;
+    PowerManager powerManager;
+    public static String timeEventId;
+
 
     public NormalWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        PowerManager powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TESTING:WAKE LOCK");
         wakeLock.acquire();
         Log.e("wake lock accuired","done");
@@ -39,13 +41,11 @@ public class NormalWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        AppDataBase dataBase = AppDataBase.getInstance(App.getInstance());
-        timeBasedEventDao = dataBase.timeBasedEventDao();
+        preferences=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        sfEditor=preferences.edit();
         Data data=getInputData();
         timeEventId=data.getString(EVENT_ID);
         Log.e("app", "In normal service");
-        preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        sfEditor = preferences.edit();
         sfEditor.putBoolean("isTimeEventActive", false);
         sfEditor.putString("activatedTimeEvent", null);
         sfEditor.commit();

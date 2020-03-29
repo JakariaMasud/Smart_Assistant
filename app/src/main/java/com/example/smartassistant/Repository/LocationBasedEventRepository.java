@@ -7,6 +7,9 @@ import com.example.smartassistant.AppDataBase;
 import com.example.smartassistant.Dao.LocationBasedEventDao;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
@@ -19,9 +22,9 @@ public class LocationBasedEventRepository {
     private LocationBasedEventDao locationBasedEventDao;
     private LocationBasedEvent event;
 
-    public LocationBasedEventRepository(Application application) {
-        AppDataBase dataBase=AppDataBase.getInstance(application);
-        locationBasedEventDao=dataBase.locationBasedEventDao();
+    @Inject
+    public LocationBasedEventRepository(LocationBasedEventDao dao) {
+        locationBasedEventDao=dao;
         allEvents=locationBasedEventDao.getAllEvents();
     }
     public void insert(final LocationBasedEvent event){

@@ -8,6 +8,7 @@ import com.example.smartassistant.AppDataBase;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import java.util.List;
+import javax.inject.Inject;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
@@ -20,9 +21,9 @@ public class TimeBasedEventRepository {
     private TimeBasedEventDao timeBasedEventDao;
     private  TimeBasedEvent event;
 
-    public TimeBasedEventRepository(Application application) {
-        AppDataBase dataBase=AppDataBase.getInstance(application);
-        timeBasedEventDao=dataBase.timeBasedEventDao();
+    @Inject
+    public TimeBasedEventRepository(TimeBasedEventDao dao) {
+        timeBasedEventDao=dao;
         allEvents=timeBasedEventDao.getAllEvents();
 
     }

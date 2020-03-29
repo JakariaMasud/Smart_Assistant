@@ -30,10 +30,11 @@ public class GeofenceTransitionWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        preferences= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        sfEditor=preferences.edit();
         Data data=getInputData();
         eventId=data.getString(EVENT_ID);
         geofenceTransition =data.getInt("transition_type",-1);
-
         AudioManager audioManager = (AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         int mode=audioManager.getRingerMode();
         int silent=AudioManager.RINGER_MODE_SILENT;
@@ -43,8 +44,6 @@ public class GeofenceTransitionWorker extends Worker {
         // Get the transition type.
 
         if(geofenceTransition== Geofence.GEOFENCE_TRANSITION_ENTER){
-            preferences= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-            sfEditor=preferences.edit();
             sfEditor.putBoolean("isLocationEventActive",true);
             sfEditor.putString("activatedLocationEvent",eventId);
             sfEditor.commit();
@@ -59,12 +58,10 @@ public class GeofenceTransitionWorker extends Worker {
 
         }
         else if(geofenceTransition==Geofence.GEOFENCE_TRANSITION_EXIT) {
-            preferences= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
             sfEditor=preferences.edit();
             sfEditor.putBoolean("isLocationEventActive",false);
             sfEditor.putString("activatedLocationEvent",null);
             sfEditor.commit();
-            ;
             if(mode!=normal){
                 NotificationHelper.displayNotification(getApplicationContext(),"Geo fence Alert","you have exited from your Location Event area");
                 audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);

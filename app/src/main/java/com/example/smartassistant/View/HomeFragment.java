@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.example.smartassistant.Adapter.EventFragmentAdapter;
 import com.example.smartassistant.Adapter.LocationBasedAdapter;
 import com.example.smartassistant.Adapter.TimeBasedAdapter;
+import com.example.smartassistant.DI.ViewModelFactory;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
@@ -46,9 +47,15 @@ import com.example.smartassistant.databinding.FragmentHomeBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 
 public class HomeFragment extends Fragment {
     FragmentHomeBinding homeBinding;
+    NavController navController;
+    List<LocationBasedEvent> locationBasedEventList;
+    List<TimeBasedEvent> timeBasedEventList;
+    EventFragmentAdapter adapter;
     LocationBasedAdapter locationBasedAdapter;
     TimeBasedAdapter timeBasedAdapter;
     TimeBasedEventViewModel timeBasedEventViewModel;
@@ -56,17 +63,20 @@ public class HomeFragment extends Fragment {
     RecyclerView.LayoutManager timeLayoutManager;
     RecyclerView.LayoutManager locationLayoutManager;
     private static final String TAG = "HomeFragment";
+
+    @Inject
     SharedPreferences preferences;
-    NavController navController;
-    List<LocationBasedEvent> locationBasedEventList;
-    List<TimeBasedEvent> timeBasedEventList;
-    EventFragmentAdapter adapter;
 
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

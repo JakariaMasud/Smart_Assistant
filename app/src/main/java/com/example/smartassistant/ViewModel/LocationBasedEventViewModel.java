@@ -5,19 +5,24 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.Repository.LocationBasedEventRepository;
 
 import java.util.List;
 
-public class LocationBasedEventViewModel extends AndroidViewModel {
+import javax.inject.Inject;
+
+public class LocationBasedEventViewModel extends ViewModel {
     LiveData<List<LocationBasedEvent>> allEvents;
     LocationBasedEventRepository LocationBasedEventRepository;
-    public LocationBasedEventViewModel(@NonNull Application application) {
-        super(application);
-        LocationBasedEventRepository =new LocationBasedEventRepository(application);
+
+    @Inject
+    public LocationBasedEventViewModel(LocationBasedEventRepository repository) {
+        LocationBasedEventRepository=repository;
         allEvents=LocationBasedEventRepository.getAllEvents();
+
     }
 
     public LiveData<List<LocationBasedEvent>> getAllEvents(){

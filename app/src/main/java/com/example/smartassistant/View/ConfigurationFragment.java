@@ -38,6 +38,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -51,12 +53,19 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class ConfigurationFragment extends Fragment {
     FragmentConfigurationBinding configurationBinding;
-    SharedPreferences preferences;
-    SharedPreferences.Editor sfEditor;
     NavController navController;
     int selectedSim=111;
     String msgText,notificationTitle,notificationDescription;
+    @Inject
+    SharedPreferences preferences;
+    @Inject
+    SharedPreferences.Editor sfEditor;
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     public ConfigurationFragment() {
         // Required empty public constructor
@@ -75,8 +84,6 @@ public class ConfigurationFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController= Navigation.findNavController(view);
-        preferences=getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        sfEditor=preferences.edit();
         ConfigurationFragmentPermissionsDispatcher.settingUpUIWithPermissionCheck(this);
 
 

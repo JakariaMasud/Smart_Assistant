@@ -42,8 +42,6 @@ public class MessageSendingWorker extends Worker {
         Data data=getInputData();
         phoneNumber=data.getString("phone");
         Log.e("phone",phoneNumber);
-        AppDataBase dataBase = AppDataBase.getInstance(App.getInstance());
-        timeBasedEventDao = dataBase.timeBasedEventDao();
         preferences= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         AudioManager audioManager=(AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         int mode=audioManager.getRingerMode();

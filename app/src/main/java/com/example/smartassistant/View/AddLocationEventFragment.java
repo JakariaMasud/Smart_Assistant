@@ -1,13 +1,9 @@
 package com.example.smartassistant.View;
-import android.Manifest;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,24 +15,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 import com.example.smartassistant.BroadCastReciver.LocationBasedEventReciever;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
+import com.example.smartassistant.DI.ViewModelFactory;
 import com.example.smartassistant.databinding.FragmentAddLocationEventBinding;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.schibstedspain.leku.LocationPickerActivity;
 import java.util.UUID;
+
+import javax.inject.Inject;
+
 import static android.app.Activity.RESULT_OK;
 import static com.schibstedspain.leku.LocationPickerActivityKt.LATITUDE;
 import static com.schibstedspain.leku.LocationPickerActivityKt.LOCATION_ADDRESS;
@@ -50,22 +46,33 @@ public class AddLocationEventFragment extends Fragment  {
     FragmentAddLocationEventBinding locationEventBinding;
     int LOCATION_REQUEST_CODE =123;
     Intent locationPickerIntent;
-    private GeofencingClient geofencingClient;
     String GEOFENCE_REQ_ID;
     private float RADIUS;
     double latitude;
     double longitude;
     String address;
     String title;
-    private PendingIntent geofencePendingIntent;
-    LocationBasedEventViewModel locationBasedEventViewModel;
     NavController navController;
+    private PendingIntent geofencePendingIntent;
+
+    @Inject
+    public GeofencingClient geofencingClient;
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    LocationBasedEventViewModel   locationBasedEventViewModel;
+
 
 
     public AddLocationEventFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,8 +85,7 @@ public class AddLocationEventFragment extends Fragment  {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        locationBasedEventViewModel=new ViewModelProvider(this).get(LocationBasedEventViewModel.class);
-        geofencingClient = LocationServices.getGeofencingClient(getContext());
+        locationBasedEventViewModel=new ViewModelProvider(this,viewModelFactory).get(LocationBasedEventViewModel.class);
         navController = Navigation.findNavController(view);
         settingUpListener();
 

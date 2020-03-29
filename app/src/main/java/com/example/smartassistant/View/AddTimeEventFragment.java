@@ -6,7 +6,6 @@ import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -20,7 +19,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +31,16 @@ import com.example.smartassistant.BroadCastReciver.TimeOverReciever;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
+import com.example.smartassistant.DI.ViewModelFactory;
 import com.example.smartassistant.databinding.FragmentAddTimeEventBinding;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.Calendar;
 import java.util.UUID;
+
+import javax.inject.Inject;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -59,17 +61,30 @@ public class AddTimeEventFragment extends Fragment {
     String notificationBefore;
     String selectedAmPm;
     String type;
-    TimeBasedEventViewModel timeBasedEventViewModel;
     int notificationInt;
     int periodInt;
     NavController navController;
     public static final String EVENT = "EventData";
+    TimeBasedEventViewModel timeBasedEventViewModel;
+
+    @Inject
+    AlarmManager alarmManager ;
+    @Inject
+    NotificationManager notificationManager ;
+    @Inject
+    ViewModelFactory viewModelFactory;
+
 
 
     public AddTimeEventFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,7 +98,7 @@ public class AddTimeEventFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        timeBasedEventViewModel = new ViewModelProvider(this).get(TimeBasedEventViewModel.class);
+        timeBasedEventViewModel = new ViewModelProvider(this,viewModelFactory).get(TimeBasedEventViewModel.class);
         AddTimeEventFragmentPermissionsDispatcher.settingUpListenerWithPermissionCheck(this);
 
 
@@ -91,8 +106,8 @@ public class AddTimeEventFragment extends Fragment {
 
     @NeedsPermission({Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_CALL_LOG})
     public void settingUpListener() {
-        NotificationManager notificationManager =
-                (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && !notificationManager.isNotificationPolicyAccessGranted()) {
@@ -215,7 +230,6 @@ public class AddTimeEventFragment extends Fragment {
 
 
     public void addToAlarmManager(String id) {
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
         Intent eventIntent = new Intent(getContext(), TimeEventReciever.class);
         eventIntent.putExtra(EVENT,id);
         PendingIntent eventPendingIntent = PendingIntent.getBroadcast(getActivity(), 1, eventIntent, PendingIntent.FLAG_UPDATE_CURRENT);
