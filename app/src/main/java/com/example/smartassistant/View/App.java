@@ -5,11 +5,15 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
+
 import com.example.smartassistant.DI.AppModule;
 import com.example.smartassistant.DI.ApplicationComponent;
 import com.example.smartassistant.DI.DaggerApplicationComponent;
 import com.example.smartassistant.DI.DataBaseModule;
 import com.example.smartassistant.DI.ServiceModule;
+import com.example.smartassistant.DI.WorkerFactory;
 
 public class App extends Application  {
     private ApplicationComponent applicationComponent;
@@ -24,6 +28,7 @@ public class App extends Application  {
                 .dataBaseModule(new DataBaseModule())
                 .serviceModule(new ServiceModule())
                 .build();
+        configureWorkManager();
 
 
 
@@ -45,6 +50,14 @@ public class App extends Application  {
     public  ApplicationComponent getApplicationComponent() {
 
         return applicationComponent;
+    }
+    private void configureWorkManager() {
+        WorkerFactory factory = applicationComponent.factory();
+        Configuration config = new Configuration.Builder()
+                .setWorkerFactory(factory)
+                .build();
+
+        WorkManager.initialize(this, config);
     }
 
 }

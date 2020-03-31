@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 @Singleton
-@Component (modules = {AppModule.class,DataBaseModule.class,ViewModelModule.class,ServiceModule.class})
+@Component (modules = {AppModule.class,DataBaseModule.class,ViewModelModule.class,ServiceModule.class,WorkerModule.class})
 public interface ApplicationComponent {
     void inject(AddLocationEventFragment addLocationEventFragment);
     void inject(AddTimeEventFragment addTimeEventFragment);
@@ -29,4 +29,5 @@ public interface ApplicationComponent {
     void inject(EditConfigurationFragment editConfigurationFragment);
 
     void inject(ConfigurationFragment configurationFragment);
+    WorkerFactory factory();
 }

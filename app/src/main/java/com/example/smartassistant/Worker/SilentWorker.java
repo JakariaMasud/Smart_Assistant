@@ -8,6 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import com.example.smartassistant.DI.ChildWorkerFactory;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.smartassistant.View.App.EVENT_ID;
 
@@ -19,9 +25,11 @@ public class SilentWorker extends Worker {
     AudioManager audioManager;
     PowerManager powerManager;
 
-    public SilentWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public SilentWorker(@NonNull Context context, @NonNull WorkerParameters workerParams,SharedPreferences preferences,AudioManager audioManager,PowerManager powerManager) {
         super(context, workerParams);
-        powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        this.preferences=preferences;
+        this.audioManager=audioManager;
+        this.powerManager=powerManager;
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TESTING:WAKE LOCK");
         wakeLock.acquire();
         Log.e("wake lock accuired","done");
@@ -32,8 +40,6 @@ public class SilentWorker extends Worker {
     public Result doWork() {
         Log.e("app","In silent service");
         sfEditor=preferences.edit();
-        preferences=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        audioManager=(AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         Data data=getInputData();
         eventId=data.getString(EVENT_ID);
         sfEditor.putBoolean("isTimeEventActive",true);
@@ -45,5 +51,23 @@ public class SilentWorker extends Worker {
         }
         wakeLock.release();
         return Result.success();
+    }
+
+    public static class Factory implements ChildWorkerFactory {
+        Provider<SharedPreferences> preferences;
+        Provider<AudioManager>audioManager;
+        Provider <PowerManager> powerManager;
+
+        @Inject
+        public Factory(final Provider<SharedPreferences> preferences, final Provider<AudioManager> audioManager, final Provider<PowerManager> powerManager) {
+            this.preferences = preferences;
+            this.audioManager = audioManager;
+            this.powerManager = powerManager;
+        }
+
+        @Override
+        public Worker create(Context context, WorkerParameters parameters) {
+            return new SilentWorker(context,parameters,preferences.get(),audioManager.get(),powerManager.get());
+        }
     }
 }

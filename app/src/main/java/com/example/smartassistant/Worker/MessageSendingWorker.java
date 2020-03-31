@@ -11,26 +11,31 @@ import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
-import com.example.smartassistant.AppDataBase;
+import com.example.smartassistant.DI.ChildWorkerFactory;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
-import com.example.smartassistant.View.App;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class MessageSendingWorker extends Worker {
     public  String phoneNumber;
     SharedPreferences preferences;
+    PowerManager powerManager;
+    AudioManager audioManager;
     PowerManager.WakeLock wakeLock;
     String timeEventId,locationEventId;
     boolean isTimeEventActive;
     boolean isLocationEventActive;
     TimeBasedEventDao timeBasedEventDao;
     TimeBasedEvent timeBasedEvent;
-    public MessageSendingWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public MessageSendingWorker(@NonNull Context context, @NonNull WorkerParameters workerParams,AudioManager audioManager,SharedPreferences preferences,PowerManager powerManager,TimeBasedEventDao timeBasedEventDao) {
         super(context, workerParams);
-        PowerManager powerManager=(PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        this.preferences=preferences;
+        this.powerManager=powerManager;
+        this.audioManager=audioManager;
+        this.timeBasedEventDao=timeBasedEventDao;
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TESTING:WAKE LOCK");
         wakeLock.acquire();
         Log.e("wake lock accuired","done");
@@ -42,8 +47,6 @@ public class MessageSendingWorker extends Worker {
         Data data=getInputData();
         phoneNumber=data.getString("phone");
         Log.e("phone",phoneNumber);
-        preferences= getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        AudioManager audioManager=(AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         int mode=audioManager.getRingerMode();
         int silent=AudioManager.RINGER_MODE_SILENT;
         int vibrate=AudioManager.RINGER_MODE_VIBRATE;
@@ -96,4 +99,27 @@ public class MessageSendingWorker extends Worker {
                 .sendTextMessage(PhoneNumber.trim(),null,message,null,null);
 
     }
+    public static class Factory implements ChildWorkerFactory {
+        Provider<SharedPreferences> preferences;
+        Provider<AudioManager>audioManager;
+        Provider <PowerManager> powerManager;
+        Provider <TimeBasedEventDao> timeBasedEventDao;
+
+        @Inject
+        public Factory(final Provider<SharedPreferences> preferences, final Provider<AudioManager> audioManager, final Provider<PowerManager> powerManager, final Provider<TimeBasedEventDao> timeBasedEventDao) {
+            this.preferences = preferences;
+            this.audioManager = audioManager;
+            this.powerManager = powerManager;
+            this.timeBasedEventDao = timeBasedEventDao;
+        }
+
+
+
+
+        @Override
+        public Worker create(Context context, WorkerParameters parameters) {
+            return new MessageSendingWorker(context,parameters,audioManager.get(),preferences.get(),powerManager.get(),timeBasedEventDao.get());
+        }
+    }
+
 }
