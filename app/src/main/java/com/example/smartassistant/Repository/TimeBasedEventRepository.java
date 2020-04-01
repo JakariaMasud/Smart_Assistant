@@ -5,10 +5,20 @@ import android.os.Looper;
 import android.util.Log;
 import androidx.lifecycle.LiveData;
 import com.example.smartassistant.AppDataBase;
+import com.example.smartassistant.AsyncTask.GetTimeEventByIdTask;
 import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+
 import javax.inject.Inject;
+
+import io.reactivex.Maybe;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.functions.Action;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
@@ -185,37 +195,19 @@ public class TimeBasedEventRepository {
                     }
                 });
     }
-    public TimeBasedEvent getEventById(final String id){
-        Runnable runnable=new Runnable() {
-            @Override
-            public void run() {
-             TimeBasedEvent event= timeBasedEventDao.getEventById(id);
-            }
-        };
-        Completable.fromRunnable(runnable)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                        Log.e("work","successfully got the item ");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
+    public TimeBasedEvent getEventById(final String id) {
+        GetTimeEventByIdTask task=new GetTimeEventByIdTask(timeBasedEventDao);
+        try {
+            event= task.execute(id).get();
+        }catch (ExecutionException e){
+            e.printStackTrace();
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
 
 
 
-        return event ;
+return event;
     }
-
 }

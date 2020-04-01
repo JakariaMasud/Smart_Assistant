@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -134,8 +135,8 @@ public class TimeBasedFragment extends Fragment {
                     String id=timeBasedEventList.get(position).getId();
                     HomeFragmentDirections.ActionHomeToEditTimeEventFragment action=
                             HomeFragmentDirections.actionHomeToEditTimeEventFragment(id);
+                    Log.e("id",id);
                     navController.navigate(action);
-
                     return true;
                 case 111:
                     String eventId=timeBasedEventList.get(position).getId();

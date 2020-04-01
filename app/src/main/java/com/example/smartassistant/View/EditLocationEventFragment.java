@@ -24,6 +24,7 @@ import com.example.smartassistant.BroadCastReciver.LocationBasedEventReciever;
 import com.example.smartassistant.DI.ViewModelFactory;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import com.example.smartassistant.R;
+import com.example.smartassistant.Utils.ConnectionManager;
 import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
 import com.example.smartassistant.databinding.FragmentEditLocationEventBinding;
 import com.google.android.gms.location.Geofence;
@@ -32,6 +33,7 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.schibstedspain.leku.LocationPickerActivity;
 
@@ -119,6 +121,14 @@ public class EditLocationEventFragment extends Fragment {
         editLocationEventBinding.editLocationBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!ConnectionManager.isConnected(getContext())){
+                    new MaterialAlertDialogBuilder(getContext())
+                            .setTitle("Connection Needed")
+                            .setMessage("you are not connected with wifi or mobile data")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
                 locationPickerIntent = new LocationPickerActivity.Builder()
                         .withLocation(23.810331, 90.412521)
                         .withGeolocApiKey("AIzaSyAvHCTyXb0ef26I2i5SPwrygEnblHOweBs")

@@ -8,6 +8,9 @@ import android.media.AudioManager;
 import android.os.PowerManager;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
+
 
 import javax.inject.Singleton;
 
@@ -48,6 +51,8 @@ public class ServiceModule {
         GeofencingClient geofencingClient=LocationServices.getGeofencingClient(application);
         return geofencingClient ;
     }
+
+
 
 
 }

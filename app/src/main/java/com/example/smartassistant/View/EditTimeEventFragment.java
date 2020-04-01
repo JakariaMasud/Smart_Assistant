@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class EditTimeEventFragment extends Fragment {
     private long selectedTime;
     private  int notificationBefore;
     private String timeAmPm;
+    TimeBasedEvent event;
     @Inject
     AlarmManager alarmManager;
     @Inject
@@ -68,6 +70,7 @@ public class EditTimeEventFragment extends Fragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("injection","doing injection");
         ((App) getActivity().getApplication()).getApplicationComponent().inject(this);
     }
 
@@ -86,12 +89,13 @@ public class EditTimeEventFragment extends Fragment {
         timeBasedEventViewModel=new ViewModelProvider(this,viewModelFactory).get(TimeBasedEventViewModel.class);
         if(getArguments()!=null){
             eventId= EditLocationEventFragmentArgs.fromBundle(getArguments()).getEventId();
+            Log.e("event id",eventId);
             settingUpUi();
         }
     }
 
     private void settingUpUi() {
-        TimeBasedEvent event=timeBasedEventViewModel.getById(eventId);
+        event=timeBasedEventViewModel.getById(eventId);
         title=event.getTitle();
         period=event.getPeriod();
         timeAmPm=event.getTimeAmPm();
@@ -126,6 +130,9 @@ public class EditTimeEventFragment extends Fragment {
                                 Calendar selectedCal = Calendar.getInstance();
                                 selectedCal.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 selectedCal.set(Calendar.MINUTE, minute);
+                                if(selectedCal.getTimeInMillis()<System.currentTimeMillis()){
+                                    selectedCal.add(Calendar.DATE,1);
+                                }
                                 selectedTime = selectedCal.getTimeInMillis();
                                 timeAmPm = (String) DateFormat.format("hh:mm a", selectedCal);
                                 editTimeEventBinding.editSelectedTimeTV.setText(timeAmPm);

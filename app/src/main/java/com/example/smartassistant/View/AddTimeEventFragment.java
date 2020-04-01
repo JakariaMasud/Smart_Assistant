@@ -150,8 +150,14 @@ public class AddTimeEventFragment extends Fragment {
                                 Calendar selectedCal = Calendar.getInstance();
                                 selectedCal.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 selectedCal.set(Calendar.MINUTE, minute);
-                                selectedTime = selectedCal.getTimeInMillis();
+                                selectedCal.set(Calendar.SECOND, 00);
+
+
+                                if(selectedCal.getTimeInMillis()<System.currentTimeMillis()){
+                                    selectedCal.add(Calendar.DATE,1);
+                                }
                                 selectedAmPm = (String) DateFormat.format("hh:mm a", selectedCal);
+                                selectedTime = selectedCal.getTimeInMillis();
                                 timeEventBinding.selectedTimeTV.setText(selectedAmPm);
                             }
                         }, hour, minute, is24HourFormat);

@@ -6,7 +6,6 @@ import android.media.AudioManager;
 import android.os.PowerManager;
 import android.telephony.SmsManager;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
@@ -16,7 +15,6 @@ import com.example.smartassistant.Dao.TimeBasedEventDao;
 import com.example.smartassistant.Model.TimeBasedEvent;
 import javax.inject.Inject;
 import javax.inject.Provider;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class MessageSendingWorker extends Worker {

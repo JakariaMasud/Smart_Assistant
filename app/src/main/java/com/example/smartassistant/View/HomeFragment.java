@@ -53,15 +53,8 @@ import javax.inject.Inject;
 public class HomeFragment extends Fragment {
     FragmentHomeBinding homeBinding;
     NavController navController;
-    List<LocationBasedEvent> locationBasedEventList;
-    List<TimeBasedEvent> timeBasedEventList;
     EventFragmentAdapter adapter;
-    LocationBasedAdapter locationBasedAdapter;
-    TimeBasedAdapter timeBasedAdapter;
-    TimeBasedEventViewModel timeBasedEventViewModel;
-    LocationBasedEventViewModel locationBasedEventViewModel;
-    RecyclerView.LayoutManager timeLayoutManager;
-    RecyclerView.LayoutManager locationLayoutManager;
+
     private static final String TAG = "HomeFragment";
 
     @Inject
@@ -89,8 +82,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        locationBasedEventList = new ArrayList<>();
-        timeBasedEventList = new ArrayList<>();
         navController = Navigation.findNavController(view);
         preferences = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         boolean hasData = preferences.contains("isConfigured");

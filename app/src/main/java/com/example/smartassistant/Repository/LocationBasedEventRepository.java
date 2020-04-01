@@ -4,9 +4,11 @@ import android.app.Application;
 import android.util.Log;
 import androidx.lifecycle.LiveData;
 import com.example.smartassistant.AppDataBase;
+import com.example.smartassistant.AsyncTask.GetLocationEventByIdTask;
 import com.example.smartassistant.Dao.LocationBasedEventDao;
 import com.example.smartassistant.Model.LocationBasedEvent;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -186,34 +188,18 @@ public class LocationBasedEventRepository {
                 });
     }
     public LocationBasedEvent getEventById(final String id){
-        Runnable runnable=new Runnable() {
-            @Override
-            public void run() {
-                LocationBasedEvent event= locationBasedEventDao.getEventById(id);
-            }
-        };
-        Completable.fromRunnable(runnable)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
+        GetLocationEventByIdTask getLocationEventByIdTask =new GetLocationEventByIdTask(locationBasedEventDao);
 
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                        Log.e("work","successfully got the item ");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
-
+        try {
+            event= getLocationEventByIdTask.execute(id).get();
+        }catch (ExecutionException e){
+            e.printStackTrace();
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
         return event ;
+
     }
 
 }

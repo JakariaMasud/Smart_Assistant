@@ -1,6 +1,7 @@
 package com.example.smartassistant.ViewModel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -46,7 +47,8 @@ public class TimeBasedEventViewModel extends ViewModel {
         timeBasedEventRepository.deleteById(id);
     }
     public TimeBasedEvent getById(String id){
-       return timeBasedEventRepository.getEventById(id);
+        Log.e("in view model id: ",id);
+        return timeBasedEventRepository.getEventById(id);
     }
 
 }
