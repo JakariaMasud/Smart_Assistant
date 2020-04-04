@@ -34,6 +34,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,8 @@ import permissions.dispatcher.RuntimePermissions;
 public class ConfigurationFragment extends Fragment {
     FragmentConfigurationBinding configurationBinding;
     NavController navController;
-    int selectedSim=111;
+    ArrayList<Integer> idList=new ArrayList<>();
+    int selectedSim=-1;
     String msgText,notificationTitle,notificationDescription;
     @Inject
     SharedPreferences preferences;
@@ -106,6 +108,7 @@ public class ConfigurationFragment extends Fragment {
             for(int i=0;i<totalSim;i++){
                 Chip chip=new Chip(getContext());
                 int id=View.generateViewId();
+                idList.add(id);
                 chip.setId(id);
                 ChipDrawable drawable= ChipDrawable.createFromAttributes(getContext(),null,0,R.style.CustomChipChoice);
                 chip.setChipDrawable(drawable);
@@ -117,7 +120,13 @@ public class ConfigurationFragment extends Fragment {
         configurationBinding.slectionSimChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-                 selectedSim=checkedId;
+             if(checkedId==idList.get(0)){
+                 selectedSim=0;
+             }
+             else {
+                 selectedSim=1;
+             }
+
 
             }
         });

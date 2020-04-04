@@ -141,6 +141,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/daily_chip"
+                        app:chipCornerRadius="20dp"
                         android:checkable="true"
                         android:clickable="true"
                         android:focusable="true"

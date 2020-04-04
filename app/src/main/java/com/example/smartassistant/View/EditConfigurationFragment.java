@@ -30,9 +30,12 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -42,13 +45,14 @@ import javax.inject.Inject;
 public class EditConfigurationFragment extends Fragment {
     FragmentEditConfigurationBinding editConfigurationBinding;
     NavController navController;
-    int selectedSim=111;
+    int selectedSim=-1;
     String msgText,notificationTitle,notificationDescription;
-    List<Integer> idList;
+    ArrayList<Integer> idList=new ArrayList<>();
     @Inject
     SharedPreferences preferences;
     @Inject
     SharedPreferences.Editor sfEditor;
+
 
 
 
@@ -74,40 +78,58 @@ public class EditConfigurationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.e("on view created","called");
         idList=new ArrayList<>();
         navController= Navigation.findNavController(view);
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
-            Log.e("sim","permission available");
-
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
             SubscriptionManager subscriptionManager = SubscriptionManager.from(getContext());
             List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
             int totalSim=subscriptionInfoList.size();
-            for(int i=0;i<totalSim;i++){
-                Chip chip=new Chip(getContext());
-                int id=View.generateViewId();
-                chip.setId(id);
-                idList.add(id);
-                ChipDrawable drawable= ChipDrawable.createFromAttributes(getContext(),null,0,R.style.CustomChipChoice);
-                chip.setChipDrawable(drawable);
-                chip.setText(subscriptionInfoList.get(i).getCarrierName());
-                editConfigurationBinding.editSlectionSimChipGroup.addView(chip);
+                for(int i=0;i<totalSim;i++){
+                    Chip chip=new Chip(getContext());
+                    int id=View.generateViewId();
+                    idList.add(id);
+                    chip.setId(id);
+                    ChipDrawable drawable= ChipDrawable.createFromAttributes(getContext(),null,0,R.style.CustomChipChoice);
+                    chip.setChipDrawable(drawable);
+                    chip.setText(subscriptionInfoList.get(i).getCarrierName());
+                    editConfigurationBinding.editSlectionSimChipGroup.addView(chip);
+
+
             }
+
             msgText=preferences.getString("msgText",null);
             notificationTitle=preferences.getString("notificationTitle",null);
-            notificationDescription=preferences.getString("notificationDescription",null);
-            selectedSim=preferences.getInt("selectedSim",111);
+            notificationDescription=preferences.getString("notificationDescription","dummy description");
+            selectedSim=preferences.getInt("selectedSim",-1);
             editConfigurationBinding.editMessageET.setText(msgText);
             editConfigurationBinding.editNotificationTitleET.setText(notificationTitle);
             editConfigurationBinding.editNotificationDesET.setText(notificationDescription);
-            if(selectedSim!=111){
-                editConfigurationBinding.editSlectionSimChipGroup.check(selectedSim);
+
+            if(selectedSim!=-1){
+                if(selectedSim>totalSim-1){
+                    editConfigurationBinding.editSlectionSimChipGroup.check(idList.get(0));
+                }
+                else if(selectedSim==0){
+                    editConfigurationBinding.editSlectionSimChipGroup.check(idList.get(0));
+                }
+                else if(selectedSim==1) {
+                    editConfigurationBinding.editSlectionSimChipGroup.check(idList.get(1));
+
+                }
             }
+
 
         }
         editConfigurationBinding.editSlectionSimChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-            selectedSim=checkedId;
+            if(selectedSim==idList.get(0)){
+                selectedSim=0;
+            }
+            else {
+                selectedSim=1;
+            }
 
             }
         });
@@ -157,6 +179,7 @@ public class EditConfigurationFragment extends Fragment {
     }
 
     private void saveTheData() {
+
         sfEditor.putString("msgText",msgText);
         sfEditor.putString("notificationTitle",notificationTitle);
         sfEditor.putString("notificationDescription",notificationDescription);
@@ -168,4 +191,6 @@ public class EditConfigurationFragment extends Fragment {
         navController.navigate(EditConfigurationFragmentDirections.actionEditConfigurationToHome());
 
     }
+
+
 }
