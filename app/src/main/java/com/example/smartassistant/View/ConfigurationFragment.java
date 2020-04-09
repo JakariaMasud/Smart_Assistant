@@ -185,7 +185,7 @@ public class ConfigurationFragment extends Fragment {
         sfEditor.commit();
         Toast.makeText(getContext(),"successfully configured",Toast.LENGTH_LONG).show();
         configurationBinding.configurationProgress.setVisibility(View.GONE);
-       navController.navigate(R.id.action_configuration_to_home);
+       navController.navigate(R.id.action_configurationFragment_to_home);
 
     }
 

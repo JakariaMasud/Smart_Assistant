@@ -155,7 +155,7 @@ public class AddLocationEventFragment extends Fragment  {
                 Snackbar.make(locationEventBinding.rootLayoutLocation,"successfully  added to geo fences",Snackbar.LENGTH_SHORT);
                 locationBasedEventViewModel.insert(event);
                 locationEventBinding.locationProgress.setVisibility(View.GONE);
-                navController.navigate(R.id.action_addLocationEvent_to_home);
+                navController.navigate(R.id.action_addLocationEventFragment_to_home);
 
 
             }

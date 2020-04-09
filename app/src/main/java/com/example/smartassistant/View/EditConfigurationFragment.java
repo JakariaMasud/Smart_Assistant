@@ -188,7 +188,7 @@ public class EditConfigurationFragment extends Fragment {
         sfEditor.commit();
         Toast.makeText(getContext(),"successfully configuration Updated",Toast.LENGTH_LONG).show();
         editConfigurationBinding.editProgress.setVisibility(View.GONE);
-        navController.navigate(EditConfigurationFragmentDirections.actionEditConfigurationToHome());
+        navController.navigate(EditConfigurationFragmentDirections.actionEditConfigurationFragmentToHome());
 
     }
 

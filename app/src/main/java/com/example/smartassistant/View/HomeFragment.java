@@ -50,7 +50,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
     FragmentHomeBinding homeBinding;
     NavController navController;
     EventFragmentAdapter adapter;
@@ -83,18 +83,48 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        preferences = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         boolean hasData = preferences.contains("isConfigured");
 
         if (!hasData) {
-            navController.navigate(HomeFragmentDirections.actionHomeToConfigurationFragment());
+           navController.navigate(HomeFragmentDirections.actionHomeToConfigurationFragment());
         }
-        adapter=new EventFragmentAdapter(getChildFragmentManager());
-        homeBinding.eventViewPager.setAdapter(adapter);
-        homeBinding.eventTabLayout.setupWithViewPager(homeBinding.eventViewPager);
+        homeBinding.timeCard.setOnClickListener(this);
+        homeBinding.locationCard.setOnClickListener(this);
+        homeBinding.settingCard.setOnClickListener(this);
+        homeBinding.timelineCard.setOnClickListener(this);
+        homeBinding.emergencyCard.setOnClickListener(this);
+        homeBinding.aboutMeCard.setOnClickListener(this);
+
+
+
+
+
 
 
     }
 
 
+    @Override
+    public void onClick(View view) {
+        if(view.getId()==R.id.time_card){
+            navController.navigate(R.id.action_home_to_addTimeEventFragment);
+        }
+        else if(view.getId()==R.id.location_card){
+            navController.navigate(R.id.action_home_to_addLocationEventFragment);
+        }
+        else if(view.getId()==R.id.setting_card){
+            navController.navigate(R.id.action_home_to_editConfigurationFragment);
+        }
+        else if(view.getId()==R.id.timeline_card){
+            navController.navigate(R.id.action_home_to_viewAllFragment);
+        }
+        else if(view.getId()==R.id.emergency_card){
+            navController.navigate(R.id.action_home_to_emargencyHelpLineFragment);
+        }
+        else if(view.getId()==R.id.about_me_card){
+            navController.navigate(R.id.action_home_to_aboutUsFragment);
+        }
+
+
+    }
 }

@@ -11,24 +11,104 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
+            android:id="@+id/action_home_to_addTimeEventFragment"
+            app:destination="@id/addTimeEventFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_home_to_addLocationEventFragment"
+            app:destination="@id/addLocationEventFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_home_to_editConfigurationFragment"
+            app:destination="@id/editConfigurationFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_home_to_viewAllFragment"
+            app:destination="@id/viewAllFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_home_to_emargencyHelpLineFragment"
+            app:destination="@id/emargencyHelpLineFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_home_to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
             android:id="@+id/action_home_to_configurationFragment"
-            app:destination="@id/configuration"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/nav_graph"
-            app:launchSingleTop="true"
+            app:destination="@id/configurationFragment"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addTimeEventFragment"
+        android:name="com.example.smartassistant.View.AddTimeEventFragment"
+        android:label="Add Time Event" >
         <action
-            android:id="@+id/action_home_to_editTimeEventFragment"
+            android:id="@+id/action_addTimeEventFragment_to_home"
+            app:destination="@id/home"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:destination="@id/editTimeEventFragment" />
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addLocationEventFragment"
+        android:name="com.example.smartassistant.View.AddLocationEventFragment"
+        android:label="Add Location Event" >
         <action
-            android:id="@+id/action_home_to_editLocationEventFragment"
+            android:id="@+id/action_addLocationEventFragment_to_home"
+            app:destination="@id/home"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/editConfigurationFragment"
+        android:name="com.example.smartassistant.View.EditConfigurationFragment"
+        android:label="Edit Configuration" >
+        <action
+            android:id="@+id/action_editConfigurationFragment_to_home"
+            app:destination="@id/home"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/viewAllFragment"
+        android:name="com.example.smartassistant.View.ViewAllFragment"
+        android:label="Timeline" >
+        <action
+            android:id="@+id/action_viewAllFragment_to_editTimeEventFragment"
+            app:destination="@id/editTimeEventFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_viewAllFragment_to_editLocationEventFragment"
             app:destination="@id/editLocationEventFragment"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
@@ -36,66 +116,25 @@
             app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
-        android:id="@+id/addTimeEvent"
-        android:name="com.example.smartassistant.View.AddTimeEventFragment"
-        android:label="Add Time Event"
-        tools:layout="@layout/fragment_add_time_event" >
-        <action
-            android:id="@+id/action_addTimeEvent_to_home"
-            app:destination="@id/home"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
-    </fragment>
-    <fragment
-        android:id="@+id/addLocationEvent"
-        android:name="com.example.smartassistant.View.AddLocationEventFragment"
-        android:label="Add Location Event"
-        tools:layout="@layout/fragment_add_location_event" >
-        <action
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            android:id="@+id/action_addLocationEvent_to_home"
-            app:destination="@id/home" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/Editconfiguration"
-        android:name="com.example.smartassistant.View.EditConfigurationFragment"
-        android:label="Edit Configuration"
-        tools:layout="@layout/fragment_edit_configuration">
-        <action
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            android:id="@+id/action_editConfiguration_to_home"
-            app:destination="@id/home" />
-    </fragment>
-    <fragment
-        android:id="@+id/emargencyHelpLine"
+        android:id="@+id/emargencyHelpLineFragment"
         android:name="com.example.smartassistant.View.EmargencyHelpLineFragment"
-        android:label="Helpline"
-        tools:layout="@layout/fragment_emargency_help_line" />
+        android:label="Emargency HelpLine" />
     <fragment
-        android:id="@+id/aboutUs"
+        android:id="@+id/aboutUsFragment"
         android:name="com.example.smartassistant.View.AboutUsFragment"
-        android:label="About Us"
-        tools:layout="@layout/fragment_about_us" />
+        android:label="About Developer"
+        />
     <fragment
-        android:id="@+id/configuration"
-        android:name="com.example.smartassistant.View.ConfigurationFragment"
-        android:label="Configure the app"
-        tools:layout="@layout/fragment_configuration" >
+        android:id="@+id/editTimeEventFragment"
+        android:name="com.example.smartassistant.View.EditTimeEventFragment"
+        android:label="Edit Time Event"
+        >
+        <argument
+            android:name="eventId"
+            app:argType="string" />
         <action
-            android:id="@+id/action_configuration_to_home"
+            android:id="@+id/action_editTimeEventFragment_to_home"
             app:destination="@id/home"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/nav_graph"
-            app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
@@ -104,36 +143,25 @@
     <fragment
         android:id="@+id/editLocationEventFragment"
         android:name="com.example.smartassistant.View.EditLocationEventFragment"
-        android:label="Edit Location Event"
-        tools:layout="@layout/fragment_edit_location_event" >
+        android:label="Edit Location Event" >
         <argument
             android:name="eventId"
             app:argType="string" />
         <action
             android:id="@+id/action_editLocationEventFragment_to_home"
             app:destination="@id/home"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/nav_graph"
-            app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
-        android:id="@+id/editTimeEventFragment"
-        android:name="com.example.smartassistant.View.EditTimeEventFragment"
-        android:label="Edit Time Event"
-        tools:layout="@layout/fragment_edit_time_event" >
-        <argument
-            android:name="eventId"
-            app:argType="string" />
+        android:id="@+id/configurationFragment"
+        android:name="com.example.smartassistant.View.ConfigurationFragment"
+        android:label="Configure App" >
         <action
-            android:id="@+id/action_editTimeEventFragment_to_home"
+            android:id="@+id/action_configurationFragment_to_home"
             app:destination="@id/home"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/nav_graph"
-            app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"

@@ -255,6 +255,6 @@ public class EditTimeEventFragment extends Fragment {
         timeBasedEventViewModel.update(timeBasedEvent);
         Toast.makeText(getContext(), "Successfully updated the event", Toast.LENGTH_SHORT).show();
         editTimeEventBinding.edittimeProgress.setVisibility(View.GONE);
-        navController.navigate(EditTimeEventFragmentDirections.actionEditTimeEventFragmentToHome());
+        navController.navigate(R.id.action_editTimeEventFragment_to_home);
     }
 }

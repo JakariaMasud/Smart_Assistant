@@ -133,9 +133,7 @@ public class TimeBasedFragment extends Fragment {
             switch(item.getItemId()) {
                 case 110:
                     String id=timeBasedEventList.get(position).getId();
-                    HomeFragmentDirections.ActionHomeToEditTimeEventFragment action=
-                            HomeFragmentDirections.actionHomeToEditTimeEventFragment(id);
-                    Log.e("id",id);
+                    ViewAllFragmentDirections.ActionViewAllFragmentToEditTimeEventFragment action=ViewAllFragmentDirections.actionViewAllFragmentToEditTimeEventFragment(id);
                     navController.navigate(action);
                     return true;
                 case 111:

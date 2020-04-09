@@ -129,7 +129,7 @@ public class LocationBasedFragment extends Fragment {
             LocationBasedEvent event=  locationBasedEventList.get(position);
             switch(item.getItemId()) {
                 case 210:
-                    HomeFragmentDirections.ActionHomeToEditLocationEventFragment action=HomeFragmentDirections.actionHomeToEditLocationEventFragment(event.getId());
+                    ViewAllFragmentDirections.ActionViewAllFragmentToEditLocationEventFragment action=ViewAllFragmentDirections.actionViewAllFragmentToEditLocationEventFragment(event.getId());
                     navController.navigate(action);
                     return true;
                 case 211:

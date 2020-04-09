@@ -126,7 +126,7 @@ public class AddTimeEventFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Snackbar.make(timeEventBinding.rootLayout,"you Must give the permission to access its feature",Snackbar.LENGTH_LONG).show();
-                    navController.navigate(R.id.action_addTimeEvent_to_home);
+                    navController.navigate(R.id.action_addTimeEventFragment_to_home);
 
                 }
             }).show();
@@ -250,14 +250,14 @@ public class AddTimeEventFragment extends Fragment {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, selectedTime.longValue() - notificationInt * 60 * 1000, alertPendingIntent);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, selectedTime.longValue() + periodInt * 60 * 1000, timeOverPendingIntent);
             timeEventBinding.timeProgress.setVisibility(View.GONE);
-            navController.navigate(R.id.action_addTimeEvent_to_home);
+            navController.navigate(R.id.action_addTimeEventFragment_to_home);
 
         } else if (selectedType == 1) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime.longValue(), AlarmManager.INTERVAL_DAY, eventPendingIntent);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime.longValue() - notificationInt * 60 * 1000, AlarmManager.INTERVAL_DAY, alertPendingIntent);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime.longValue() + periodInt * 60 * 1000, AlarmManager.INTERVAL_DAY, timeOverPendingIntent);
             timeEventBinding.timeProgress.setVisibility(View.GONE);
-            navController.navigate(R.id.action_addTimeEvent_to_home);
+            navController.navigate(R.id.action_addTimeEventFragment_to_home);
 
         } else if (selectedType == 2) {
 
@@ -265,7 +265,7 @@ public class AddTimeEventFragment extends Fragment {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime.longValue() - notificationInt * 60 * 1000, AlarmManager.INTERVAL_DAY * 7, alertPendingIntent);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectedTime.longValue() + periodInt * 60 * 1000, AlarmManager.INTERVAL_DAY * 7, timeOverPendingIntent);
             timeEventBinding.timeProgress.setVisibility(View.GONE);
-            navController.navigate(R.id.action_addTimeEvent_to_home);
+            navController.navigate(R.id.action_addTimeEventFragment_to_home);
 
         }
 

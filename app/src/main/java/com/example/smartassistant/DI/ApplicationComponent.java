@@ -9,6 +9,7 @@ import com.example.smartassistant.View.EditTimeEventFragment;
 import com.example.smartassistant.View.HomeFragment;
 import com.example.smartassistant.View.LocationBasedFragment;
 import com.example.smartassistant.View.TimeBasedFragment;
+import com.example.smartassistant.View.ViewAllFragment;
 
 import javax.inject.Singleton;
 
@@ -30,4 +31,6 @@ public interface ApplicationComponent {
 
     void inject(ConfigurationFragment configurationFragment);
     WorkerFactory factory();
+
+    void inject(ViewAllFragment viewAllFragment);
 }
