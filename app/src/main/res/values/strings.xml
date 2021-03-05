@@ -62,39 +62,6 @@
         <item>Tel:7319002-6</item>
         <item>Tel:8811751</item>
         <item>Tel:8112856, 9119315</item>
-
-    </string-array>
-    <string-array name="nameList">
-        <item>Md. Sazzadur Ahamed</item>
-        <item>Arifur Rahman</item>
-        <item>Md. Aklasur Rahman Robin</item>
-        <item>Md mahedi hassan</item>
-
-
-    </string-array>
-    <string-array name="idList">
-        <item>Lecturer</item>
-        <item>Student Id : 162-15-7784</item>
-        <item>Student Id : 162-15-7708</item>
-        <item>Student Id : 161-15-7418 </item>
-
-
-    </string-array>
-    <string-array name="emailList">
-        <item>sazzad.cse@diu.edu.bd</item>
-        <item>arifur15-7784@diu.edu.bd</item>
-        <item>aklasur15-7708@diu.edu.bd</item>
-        <item>mahedi15-7418@diu.edu.bd</item>
-
-
-    </string-array>
-    <string-array name="contactList">
-        <item>01625983595</item>
-        <item>01768589193</item>
-        <item>01515200430</item>
-        <item>01926985880</item>
-
-
     </string-array>
 </resources>
 

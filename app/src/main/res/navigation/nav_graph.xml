@@ -121,7 +121,7 @@
         android:label="Emargency HelpLine" />
     <fragment
         android:id="@+id/aboutUsFragment"
-        android:name="com.example.smartassistant.View.AboutUsFragment"
+        android:name="com.example.smartassistant.View.AboutMeFragment"
         android:label="About Developer"
         />
     <fragment

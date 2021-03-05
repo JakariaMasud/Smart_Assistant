@@ -113,7 +113,7 @@ public class AddTimeEventFragment extends Fragment {
                 && !notificationManager.isNotificationPolicyAccessGranted()) {
             new MaterialAlertDialogBuilder(getContext())
                     .setTitle("Permission Required")
-                    .setMessage("Permission Required for to active silent Mode or to restore the general rignger Mode")
+                    .setMessage("Permission Required for to active silent Mode or to restore the general ringer Mode")
                     .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
