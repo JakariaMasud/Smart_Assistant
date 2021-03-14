@@ -43,13 +43,21 @@ import com.example.smartassistant.R;
 import com.example.smartassistant.ViewModel.LocationBasedEventViewModel;
 import com.example.smartassistant.ViewModel.TimeBasedEventViewModel;
 import com.example.smartassistant.databinding.FragmentHomeBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class HomeFragment extends Fragment implements View.OnClickListener {
     FragmentHomeBinding homeBinding;
     NavController navController;
@@ -59,6 +67,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Inject
     SharedPreferences preferences;
+    @Inject
+    SharedPreferences.Editor sfEditor;
 
 
     public HomeFragment() {
@@ -86,7 +96,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         boolean hasData = preferences.contains("isConfigured");
 
         if (!hasData) {
-           navController.navigate(HomeFragmentDirections.actionHomeToConfigurationFragment());
+            HomeFragmentPermissionsDispatcher.ConfigureTheAppWithPermissionCheck(this);
+
+
+            // navController.navigate(HomeFragmentDirections.actionHomeToConfigurationFragment());
         }
         homeBinding.timeCard.setOnClickListener(this);
         homeBinding.locationCard.setOnClickListener(this);
@@ -96,35 +109,77 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         homeBinding.aboutMeCard.setOnClickListener(this);
 
 
+    }
 
-
-
-
-
+    @NeedsPermission(Manifest.permission.READ_PHONE_STATE)
+    public void ConfigureTheApp() {
+        sfEditor.putString("msgText", "Message");
+        sfEditor.putString("notificationTitle", "Notification Title");
+        sfEditor.putString("notificationDescription", "Notification Description");
+        sfEditor.putBoolean("isConfigured", true);
+        sfEditor.putInt("selectedSim", 0);
+        sfEditor.commit();
     }
 
 
     @Override
     public void onClick(View view) {
-        if(view.getId()==R.id.time_card){
+        if (view.getId() == R.id.time_card) {
             navController.navigate(R.id.action_home_to_addTimeEventFragment);
-        }
-        else if(view.getId()==R.id.location_card){
+        } else if (view.getId() == R.id.location_card) {
             navController.navigate(R.id.action_home_to_addLocationEventFragment);
-        }
-        else if(view.getId()==R.id.setting_card){
+        } else if (view.getId() == R.id.setting_card) {
             navController.navigate(R.id.action_home_to_editConfigurationFragment);
-        }
-        else if(view.getId()==R.id.timeline_card){
+        } else if (view.getId() == R.id.timeline_card) {
             navController.navigate(R.id.action_home_to_viewAllFragment);
-        }
-        else if(view.getId()==R.id.emergency_card){
+        } else if (view.getId() == R.id.emergency_card) {
             navController.navigate(R.id.action_home_to_emargencyHelpLineFragment);
-        }
-        else if(view.getId()==R.id.about_me_card){
+        } else if (view.getId() == R.id.about_me_card) {
             navController.navigate(R.id.action_home_to_aboutUsFragment);
         }
 
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        HomeFragmentPermissionsDispatcher.onRequestPermissionsResult(HomeFragment.this, requestCode, grantResults);
+    }
+
+    @OnShowRationale(Manifest.permission.READ_PHONE_STATE)
+    void showRationale(final PermissionRequest request) {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle("Permission needed")
+                .setMessage("App needs the permission for its service ")
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                request.proceed();
+                            }
+                        }
+                ).show();
+
+
+    }
+
+    @OnPermissionDenied(Manifest.permission.READ_PHONE_STATE)
+    void OnDenied() {
+        Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.READ_PHONE_STATE)
+    void onNeverAskAgain() {
+        Toast.makeText(getContext(), "Never asking again", Toast.LENGTH_SHORT).show();
+    }
+
+
 }
+

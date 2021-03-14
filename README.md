@@ -13,3 +13,12 @@ User can also create location based event. In location based event user can sele
 * Alarm Manager
 * Async Task
 * Broadcast Reciever
+* Data Binding
+
+#### Screenshot :
+
+<img src="images/1.png" height="420" width="330"> <img src="images/2.png" height="420" width="330">
+<img src="images/3.png" height="420" width="330"> <img src="images/4.png" height="420" width="330">
+<img src="images/5.png" height="420" width="330"> <img src="images/6.png" height="420" width="330">
+<img src="images/7.png" height="420" width="330"> <img src="images/8.png" height="420" width="330">
+<img src="images/9.png" height="420" width="330"> 

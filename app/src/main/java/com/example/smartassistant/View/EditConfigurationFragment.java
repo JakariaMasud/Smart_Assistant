@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -92,6 +93,7 @@ public class EditConfigurationFragment extends Fragment {
                     chip.setId(id);
                     ChipDrawable drawable= ChipDrawable.createFromAttributes(getContext(),null,0,R.style.CustomChipChoice);
                     chip.setChipDrawable(drawable);
+                    chip.setTextColor(Color.WHITE);
                     chip.setText(subscriptionInfoList.get(i).getCarrierName());
                     editConfigurationBinding.editSlectionSimChipGroup.addView(chip);
 

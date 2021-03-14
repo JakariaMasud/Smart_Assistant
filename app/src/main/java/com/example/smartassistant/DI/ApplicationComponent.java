@@ -2,7 +2,6 @@ package com.example.smartassistant.DI;
 
 import com.example.smartassistant.View.AddLocationEventFragment;
 import com.example.smartassistant.View.AddTimeEventFragment;
-import com.example.smartassistant.View.ConfigurationFragment;
 import com.example.smartassistant.View.EditConfigurationFragment;
 import com.example.smartassistant.View.EditLocationEventFragment;
 import com.example.smartassistant.View.EditTimeEventFragment;
@@ -29,7 +28,6 @@ public interface ApplicationComponent {
 
     void inject(EditConfigurationFragment editConfigurationFragment);
 
-    void inject(ConfigurationFragment configurationFragment);
     WorkerFactory factory();
 
     void inject(ViewAllFragment viewAllFragment);
